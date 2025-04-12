@@ -7,6 +7,7 @@ import SalesChart from "@/components/admin/sales-chart";
 import RecentOrders from "@/components/admin/recent-orders";
 import LowStock from "@/components/admin/low-stock";
 import PaymentMethods from "@/components/admin/payment-methods";
+import DataExport from "@/components/admin/data-export";
 
 export default function AdminDashboard() {
   const { user, isLoading } = useAuth();
@@ -42,6 +43,12 @@ export default function AdminDashboard() {
 
           {/* Payment Methods Section */}
           <PaymentMethods />
+          
+          {/* Data Export Section */}
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Data Management</h2>
+            <DataExport />
+          </div>
         </div>
       </div>
     </div>

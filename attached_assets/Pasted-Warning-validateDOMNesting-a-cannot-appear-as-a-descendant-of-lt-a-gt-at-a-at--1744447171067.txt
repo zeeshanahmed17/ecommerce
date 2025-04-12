@@ -1,0 +1,78 @@
+Warning: validateDOMNesting(...): <a> cannot appear as a descendant of &lt;a&gt;.
+    at a
+    at a
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ed8cbfb1:337:18
+    at h3
+    at div
+    at div
+    at div
+    at div
+    at div
+    at div
+    at div
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-CPFL7ZFD.js?v=23bf3d3a:41:13
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-LPGE2D4Z.js?v=23bf3d3a:59:7
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-DKHUMOWT.js?v=23bf3d3a:52:11
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-DKHUMOWT.js?v=23bf3d3a:33:11
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-CPFL7ZFD.js?v=23bf3d3a:41:13
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-O2CMLVAY.js?v=23bf3d3a:29:5
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=9cd3f899:232:13
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=9cd3f899:155:58
+    at Presence (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-FQBNBWJQ.js?v=23bf3d3a:24:11)
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=9cd3f899:146:64
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-DKHUMOWT.js?v=23bf3d3a:52:11
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-DKHUMOWT.js?v=23bf3d3a:33:11
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-CPFL7ZFD.js?v=23bf3d3a:41:13
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-LPGE2D4Z.js?v=23bf3d3a:258:22
+    at Presence (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-FQBNBWJQ.js?v=23bf3d3a:24:11)
+    at Provider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-6J5IXUBZ.js?v=23bf3d3a:48:15)
+    at DialogPortal (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=9cd3f899:109:11)
+    at _c3 (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/components/ui/sheet.tsx:68:12)
+    at Provider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-6J5IXUBZ.js?v=23bf3d3a:48:15)
+    at Dialog (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=9cd3f899:50:5)
+    at CartSidebar (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/components/shop/cart-sidebar.tsx:38:7)
+    at div
+    at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=36002584:2805:3)
+    at App
+    at CartProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-cart.tsx:21:32)
+    at AuthProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-auth.tsx:34:32)
+    at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=36002584:2805:3)
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
+Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
+The above error occurred in the <AuthPage> component:
+
+    at AuthPage (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/pages/auth-page.tsx:62:37)
+    at Route (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ed8cbfb1:323:16)
+    at Switch (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ed8cbfb1:379:17)
+    at Router
+    at main
+    at div
+    at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=36002584:2805:3)
+    at App
+    at CartProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-cart.tsx:21:32)
+    at AuthProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-auth.tsx:34:32)
+    at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=36002584:2805:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+at AuthPage (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/pages/auth-page.tsx:62:37)
+at Route (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ed8cbfb1:323:16)
+at Switch (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ed8cbfb1:379:17)
+at Router
+at main
+at div
+at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=36002584:2805:3)
+at App
+at CartProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-cart.tsx:21:32)
+at AuthProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-auth.tsx:34:32)
+at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=36002584:2805:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+at t.value (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+Rendered fewer hooks than expected. This may be caused by an accidental early return statement.

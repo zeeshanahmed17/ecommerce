@@ -326,4 +326,269 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+import { db } from "./db";
+import { eq, and, like, desc, sql } from "drizzle-orm";
+import connectPg from "connect-pg-simple";
+
+const PostgresSessionStore = connectPg(session);
+
+export class DatabaseStorage implements IStorage {
+  sessionStore: session.SessionStore;
+
+  constructor() {
+    if (!process.env.DATABASE_URL) {
+      throw new Error("DATABASE_URL is required for DatabaseStorage");
+    }
+    
+    this.sessionStore = new PostgresSessionStore({ 
+      conObject: {
+        connectionString: process.env.DATABASE_URL
+      }, 
+      createTableIfMissing: true 
+    });
+  }
+
+  // User operations
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.username, username));
+    return user;
+  }
+  
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email));
+    return user;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    return user;
+  }
+
+  // Product operations
+  async getProducts(): Promise<Product[]> {
+    return await db.select().from(products);
+  }
+
+  async getProductById(id: number): Promise<Product | undefined> {
+    const [product] = await db
+      .select()
+      .from(products)
+      .where(eq(products.id, id));
+    return product;
+  }
+
+  async getProductsByCategoryName(category: string): Promise<Product[]> {
+    return await db
+      .select()
+      .from(products)
+      .where(eq(products.category, category));
+  }
+
+  async getFeaturedProducts(): Promise<Product[]> {
+    return await db
+      .select()
+      .from(products)
+      .where(eq(products.featured, true));
+  }
+
+  async createProduct(insertProduct: InsertProduct): Promise<Product> {
+    const [product] = await db
+      .insert(products)
+      .values(insertProduct)
+      .returning();
+    return product;
+  }
+
+  async updateProduct(id: number, productUpdate: Partial<InsertProduct>): Promise<Product | undefined> {
+    const [product] = await db
+      .update(products)
+      .set(productUpdate)
+      .where(eq(products.id, id))
+      .returning();
+    return product;
+  }
+
+  async deleteProduct(id: number): Promise<boolean> {
+    const result = await db
+      .delete(products)
+      .where(eq(products.id, id));
+    return result.rowCount > 0;
+  }
+
+  async searchProducts(query: string): Promise<Product[]> {
+    const searchPattern = `%${query}%`;
+    return await db
+      .select()
+      .from(products)
+      .where(
+        sql`${products.name} ILIKE ${searchPattern} OR 
+           ${products.description} ILIKE ${searchPattern} OR 
+           ${products.category} ILIKE ${searchPattern}`
+      );
+  }
+
+  // Order operations
+  async getOrders(): Promise<Order[]> {
+    return await db.select().from(orders);
+  }
+
+  async getOrderById(id: number): Promise<Order | undefined> {
+    const [order] = await db
+      .select()
+      .from(orders)
+      .where(eq(orders.id, id));
+    return order;
+  }
+
+  async getOrdersByUserId(userId: number): Promise<Order[]> {
+    return await db
+      .select()
+      .from(orders)
+      .where(eq(orders.userId, userId));
+  }
+
+  async createOrder(orderData: InsertOrder, items: InsertOrderItem[]): Promise<Order> {
+    // Use a transaction for inserting order and items
+    const [order] = await db.transaction(async (tx) => {
+      const [newOrder] = await tx
+        .insert(orders)
+        .values(orderData)
+        .returning();
+      
+      // Insert order items
+      for (const item of items) {
+        await tx
+          .insert(orderItems)
+          .values({ ...item, orderId: newOrder.id });
+        
+        // Update product inventory
+        const [product] = await tx
+          .select()
+          .from(products)
+          .where(eq(products.id, item.productId));
+        
+        if (product) {
+          await tx
+            .update(products)
+            .set({ inventory: product.inventory - item.quantity })
+            .where(eq(products.id, item.productId));
+        }
+      }
+      
+      return [newOrder];
+    });
+    
+    return order;
+  }
+
+  async updateOrderStatus(id: number, status: string): Promise<Order | undefined> {
+    const [order] = await db
+      .update(orders)
+      .set({ status })
+      .where(eq(orders.id, id))
+      .returning();
+    return order;
+  }
+
+  // OrderItem operations
+  async getOrderItemsByOrderId(orderId: number): Promise<OrderItem[]> {
+    return await db
+      .select()
+      .from(orderItems)
+      .where(eq(orderItems.orderId, orderId));
+  }
+
+  // Analytics operations
+  async getRecentOrders(limit: number): Promise<Order[]> {
+    return await db
+      .select()
+      .from(orders)
+      .orderBy(desc(orders.createdAt))
+      .limit(limit);
+  }
+
+  async getLowStockProducts(threshold: number): Promise<Product[]> {
+    return await db
+      .select()
+      .from(products)
+      .where(sql`${products.inventory} <= ${threshold}`)
+      .orderBy(products.inventory);
+  }
+
+  async getRevenueStats(): Promise<{daily: any[], weekly: any[], monthly: any[]}> {
+    // Daily revenue - last 30 days
+    const dailyResults = await db.execute(sql`
+      SELECT 
+        DATE(created_at) as date,
+        SUM(total) as revenue
+      FROM orders
+      WHERE created_at > NOW() - INTERVAL '30 days'
+      GROUP BY DATE(created_at)
+      ORDER BY date DESC
+    `);
+
+    // Weekly revenue - last 12 weeks
+    const weeklyResults = await db.execute(sql`
+      SELECT 
+        EXTRACT(WEEK FROM created_at) as week,
+        EXTRACT(YEAR FROM created_at) as year,
+        SUM(total) as revenue
+      FROM orders
+      WHERE created_at > NOW() - INTERVAL '12 weeks'
+      GROUP BY EXTRACT(WEEK FROM created_at), EXTRACT(YEAR FROM created_at)
+      ORDER BY year DESC, week DESC
+    `);
+
+    // Monthly revenue - last 12 months
+    const monthlyResults = await db.execute(sql`
+      SELECT 
+        TO_CHAR(created_at, 'Mon') as month,
+        EXTRACT(MONTH FROM created_at) as month_num,
+        EXTRACT(YEAR FROM created_at) as year,
+        SUM(total) as revenue
+      FROM orders
+      WHERE created_at > NOW() - INTERVAL '12 months'
+      GROUP BY TO_CHAR(created_at, 'Mon'), EXTRACT(MONTH FROM created_at), EXTRACT(YEAR FROM created_at)
+      ORDER BY year DESC, month_num DESC
+    `);
+
+    return {
+      daily: dailyResults.rows,
+      weekly: weeklyResults.rows,
+      monthly: monthlyResults.rows
+    };
+  }
+
+  async getCategoryDistribution(): Promise<{category: string, count: number}[]> {
+    const results = await db.execute(sql`
+      SELECT 
+        category,
+        COUNT(*) as count
+      FROM products
+      GROUP BY category
+      ORDER BY count DESC
+    `);
+    
+    return results.rows.map(row => ({
+      category: row.category,
+      count: parseInt(row.count)
+    }));
+  }
+}
+
+// Switch to DatabaseStorage
+export const storage = new DatabaseStorage();

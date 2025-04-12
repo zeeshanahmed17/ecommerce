@@ -75,8 +75,12 @@ export default function CartSidebar() {
                     <div>
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <h3>
-                          <Link href={`/product/${item.productId}`} onClick={closeCart}>
-                            <a>{item.product.name}</a>
+                          <Link 
+                            href={`/product/${item.productId}`} 
+                            onClick={closeCart}
+                            className="hover:underline"
+                          >
+                            {item.product.name}
                           </Link>
                         </h3>
                         <p className="ml-4">${(item.product.price * item.quantity).toFixed(2)}</p>

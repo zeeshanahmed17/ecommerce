@@ -4,6 +4,10 @@ import { storage } from "./storage";
 import { setupAuth } from "./auth";
 import { z } from "zod";
 import { insertProductSchema, insertOrderSchema, insertOrderItemSchema } from "@shared/schema";
+import { initializeDb, exportTableToCSV } from "./direct-db";
+import { exportDataToCSV } from "./export";
+import path from "path";
+import fs from "fs";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication routes
@@ -247,6 +251,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     const distribution = await storage.getCategoryDistribution();
     res.json(distribution);
+  });
+
+  // Data Export API for Excel
+  app.get("/api/export/excel", async (req, res) => {
+    if (!req.isAuthenticated() || !req.user?.isAdmin) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    
+    try {
+      // Initialize the database connection if not already done
+      initializeDb();
+      
+      // Return links to each available table
+      const exportLinks = [
+        { name: 'Users', url: '/api/export/users' },
+        { name: 'Products', url: '/api/export/products' },
+        { name: 'Orders', url: '/api/export/orders' },
+        { name: 'Order Items', url: '/api/export/order_items' }
+      ];
+      
+      res.json({ 
+        success: true, 
+        message: "Data export ready. Click on the links below to download each table.", 
+        links: exportLinks 
+      });
+    } catch (error) {
+      console.error('Error in export route:', error);
+      res.status(500).json({ 
+        success: false,
+        message: "An error occurred during data export preparation", 
+        error: String(error)
+      });
+    }
+  });
+
+  // Download individual CSV files directly from database
+  app.get("/api/export/:table", async (req, res) => {
+    if (!req.isAuthenticated() || !req.user?.isAdmin) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    
+    const { table } = req.params;
+    
+    // Check for valid table names to prevent injection
+    const validTables = ['users', 'products', 'orders', 'order_items'];
+    if (!validTables.includes(table)) {
+      return res.status(400).json({ message: "Invalid table name" });
+    }
+    
+    try {
+      // Get the CSV data directly from the database
+      const csvData = await exportTableToCSV(table);
+      
+      // Set the appropriate headers for CSV download
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename=${table}.csv`);
+      
+      // Send the CSV data
+      res.send(csvData);
+    } catch (error) {
+      console.error(`Error exporting ${table}:`, error);
+      res.status(500).json({ 
+        message: `Failed to export ${table}`, 
+        error: String(error) 
+      });
+    }
   });
 
   const httpServer = createServer(app);
