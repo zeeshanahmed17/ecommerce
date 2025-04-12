@@ -9,23 +9,11 @@ import { getQueryFn, apiRequest, queryClient } from "../lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { auth, googleProvider } from "@/lib/firebase";
-
-// Mock Firebase auth functions since we're using placeholder Firebase
-const mockFirebaseFunctions = {
-  signInWithPopup: async () => ({ 
-    user: { 
-      uid: 'mock-uid', 
-      email: 'user@example.com', 
-      displayName: 'Demo User', 
-      photoURL: null 
-    } 
-  }),
-  onAuthStateChanged: (auth: any, callback: Function) => {
-    // Return unsubscribe function
-    return () => {};
-  },
-  signOut: async () => {}
-};
+import { 
+  signInWithPopup,
+  onAuthStateChanged,
+  signOut as firebaseSignOut
+} from "firebase/auth";
 
 type AuthContextType = {
   user: Omit<User, "password"> | null;
@@ -110,8 +98,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     mutationFn: async () => {
       await apiRequest("POST", "/api/logout");
       try {
-        // Use mock function to avoid dependency on Firebase
-        await mockFirebaseFunctions.signOut();
+        // Sign out from Firebase
+        await firebaseSignOut(auth);
       } catch (error) {
         console.error("Error signing out from Firebase:", error);
         // Continue even if Firebase logout fails
@@ -136,44 +124,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Google Sign-in functionality
   const signInWithGoogle = async () => {
     try {
-      // Use mock function to avoid dependency on Firebase
-      const result = await mockFirebaseFunctions.signInWithPopup();
+      // Use Firebase Google authentication
+      const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       
-      // Show info about missing Firebase configuration
-      toast({
-        title: "Firebase not configured",
-        description: "Using mock authentication. Add Firebase keys to enable Google sign-in.",
-      });
-      
-      // Attempt to use local authentication instead
+      // Send the user data to our backend to create/update the user
       try {
-        // Use demo credentials to login
-        const res = await apiRequest("POST", "/api/login", {
-          username: "demo",
-          password: "password",
+        const res = await apiRequest("POST", "/api/auth/google", {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL
         });
+        
         const userData = await res.json();
         queryClient.setQueryData(["/api/user"], userData);
-      } catch (localError) {
-        console.error("Fallback local auth failed:", localError);
+        
+        toast({
+          title: "Google sign-in successful",
+          description: `Welcome, ${userData.fullName || userData.username}!`,
+        });
+      } catch (backendError: any) {
+        console.error("Backend auth failed:", backendError);
+        toast({
+          title: "Authentication error",
+          description: "Could not complete sign-in process with the server.",
+          variant: "destructive",
+        });
       }
     } catch (error: any) {
+      console.error("Google sign-in error:", error);
       toast({
         title: "Google sign-in failed",
-        description: error.message,
+        description: error.message || "An error occurred during Google sign-in",
         variant: "destructive",
       });
     }
   };
 
   useEffect(() => {
-    // Use mock function to avoid dependency on Firebase
-    const unsubscribe = mockFirebaseFunctions.onAuthStateChanged(auth, (firebaseUser: any) => {
+    // Listen for Firebase authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: any) => {
       if (firebaseUser) {
-        // Mock implementation - do nothing
-        console.log("Mock Firebase auth state changed");
-      } 
+        // The user is signed in with Firebase
+        console.log("Firebase auth state changed: User signed in");
+        // You could sync with backend here if needed
+      } else {
+        console.log("Firebase auth state changed: User signed out");
+      }
     });
 
     return () => unsubscribe();
