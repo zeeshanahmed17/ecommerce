@@ -53,11 +53,6 @@ export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
   const [location] = useLocation();
   
-  // Redirect if user is already logged in
-  if (user) {
-    return <Redirect to="/" />;
-  }
-  
   // Login form
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -78,7 +73,7 @@ export default function AuthPage() {
       fullName: "",
     },
   });
-
+  
   // Handle login submission
   const onLoginSubmit = (data: LoginFormValues) => {
     loginMutation.mutate(data);
@@ -88,6 +83,11 @@ export default function AuthPage() {
   const onRegisterSubmit = (data: RegisterFormValues) => {
     registerMutation.mutate(data);
   };
+  
+  // Redirect if user is already logged in (after all hooks are called)
+  if (user) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
