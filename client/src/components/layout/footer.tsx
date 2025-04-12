@@ -28,23 +28,23 @@ export default function Footer() {
             <h3 className="text-lg font-medium mb-4">Shop</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/shop">
-                  <a className="text-gray-400 hover:text-white">All Products</a>
+                <Link href="/shop" className="text-gray-400 hover:text-white">
+                  All Products
                 </Link>
               </li>
               <li>
-                <Link href="/shop?sort=new">
-                  <a className="text-gray-400 hover:text-white">New Arrivals</a>
+                <Link href="/shop?sort=new" className="text-gray-400 hover:text-white">
+                  New Arrivals
                 </Link>
               </li>
               <li>
-                <Link href="/shop?featured=true">
-                  <a className="text-gray-400 hover:text-white">Best Sellers</a>
+                <Link href="/shop?featured=true" className="text-gray-400 hover:text-white">
+                  Best Sellers
                 </Link>
               </li>
               <li>
-                <Link href="/shop?discount=true">
-                  <a className="text-gray-400 hover:text-white">Discounted</a>
+                <Link href="/shop?discount=true" className="text-gray-400 hover:text-white">
+                  Discounted
                 </Link>
               </li>
             </ul>

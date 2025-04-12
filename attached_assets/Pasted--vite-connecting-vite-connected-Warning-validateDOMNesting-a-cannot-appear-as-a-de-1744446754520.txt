@@ -1,0 +1,35 @@
+[vite] connecting...
+[vite] connected.
+Warning: validateDOMNesting(...): <a> cannot appear as a descendant of &lt;a&gt;.
+    at a
+    at a
+    at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8566101f:337:18
+    at div
+    at div
+    at div
+    at nav
+    at Navbar (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/components/layout/navbar.tsx:40:32)
+    at div
+    at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=8e8f799e:2805:3)
+    at App
+    at CartProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-cart.tsx:21:32)
+    at AuthProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-auth.tsx:34:32)
+    at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=8e8f799e:2805:3)
+at a
+at a
+at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=8566101f:337:18
+at div
+at div
+at div
+at nav
+at Navbar (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/components/layout/navbar.tsx:40:32)
+at div
+at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=8e8f799e:2805:3)
+at App
+at CartProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-cart.tsx:21:32)
+at AuthProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/src/hooks/use-auth.tsx:34:32)
+at QueryClientProvider (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=8e8f799e:2805:3)
+at t.value (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://5a6da40e-a7ff-4871-bb6a-75dd9b0c4b6e-00-gbspzj7qcjcd.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
