@@ -66,13 +66,17 @@ export class MemStorage implements IStorage {
       checkPeriod: 86400000,
     });
     
-    // Add an admin user by default
-    this.createUser({
+    // We're skipping the password hashing here since there's no easy way to do it
+    // directly in the constructor. In a real app, this should be hashed properly.
+    // For development purposes, we'll use a hardcoded value - use admin/admin123
+    this.users.set(this.userId++, {
+      id: 1,
       username: "admin",
-      password: "admin123", // This will be hashed in auth.ts
+      password: "8136c13805f16e5a1c77bca14be9cb5b6451bb38c0ea88c382dea9bf786e0b3e92940637e8f0e9b5a81f1e0b35fceb11b1d29762d0764d202b0afa93a0135fe3.c5eb04a48d323e39", // "admin123"
       email: "admin@shopelite.com",
       fullName: "Admin User",
-      isAdmin: true
+      isAdmin: true,
+      createdAt: new Date()
     });
     
     // Add some sample products
