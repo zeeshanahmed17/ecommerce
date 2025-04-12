@@ -1,0 +1,80 @@
+import { pgTable, text, serial, integer, boolean, doublePrecision, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
+
+// User model
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  username: text("username").notNull().unique(),
+  password: text("password").notNull(),
+  email: text("email").notNull().unique(),
+  fullName: text("full_name"),
+  isAdmin: boolean("is_admin").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Product model
+export const products = pgTable("products", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  price: doublePrecision("price").notNull(),
+  imageUrl: text("image_url").notNull(),
+  category: text("category").notNull(),
+  inventory: integer("inventory").notNull().default(0),
+  sku: text("sku").notNull().unique(),
+  featured: boolean("featured").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Order model
+export const orders = pgTable("orders", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  status: text("status").notNull().default("pending"),
+  total: doublePrecision("total").notNull(),
+  paymentMethod: text("payment_method").notNull(),
+  paymentStatus: text("payment_status").notNull().default("pending"),
+  shippingAddress: text("shipping_address").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Order item model
+export const orderItems = pgTable("order_items", {
+  id: serial("id").primaryKey(),
+  orderId: integer("order_id").notNull(),
+  productId: integer("product_id").notNull(),
+  quantity: integer("quantity").notNull(),
+  price: doublePrecision("price").notNull(),
+});
+
+// Create insert schemas
+export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true });
+export const insertProductSchema = createInsertSchema(products).omit({ id: true, createdAt: true });
+export const insertOrderSchema = createInsertSchema(orders).omit({ id: true, createdAt: true });
+export const insertOrderItemSchema = createInsertSchema(orderItems).omit({ id: true });
+
+// Cart item schema (not stored in database - only in session)
+export const cartItemSchema = z.object({
+  productId: z.number(),
+  quantity: z.number().min(1),
+  product: z.object({
+    id: z.number(),
+    name: z.string(),
+    price: z.number(),
+    imageUrl: z.string(),
+    category: z.string(),
+    sku: z.string()
+  })
+});
+
+// Types
+export type User = typeof users.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
+export type Product = typeof products.$inferSelect;
+export type InsertProduct = z.infer<typeof insertProductSchema>;
+export type Order = typeof orders.$inferSelect;
+export type InsertOrder = z.infer<typeof insertOrderSchema>;
+export type OrderItem = typeof orderItems.$inferSelect;
+export type InsertOrderItem = z.infer<typeof insertOrderItemSchema>;
+export type CartItem = z.infer<typeof cartItemSchema>;
