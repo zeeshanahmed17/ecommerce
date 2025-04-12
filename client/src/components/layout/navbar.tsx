@@ -181,33 +181,38 @@ export default function Navbar() {
                       </form>
                     </div>
                     <div className="px-4 space-y-1">
-                      <Link href="/">
-                        <a className="block py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900 rounded-md">
-                          Home
-                        </a>
+                      <Link 
+                        href="/"
+                        className="block py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900 rounded-md"
+                      >
+                        Home
                       </Link>
-                      <Link href="/shop">
-                        <a className="block py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900 rounded-md">
-                          Shop
-                        </a>
+                      <Link 
+                        href="/shop"
+                        className="block py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-gray-900 rounded-md"
+                      >
+                        Shop
                       </Link>
                       <div className="py-2">
                         <p className="text-base font-medium text-gray-900">Categories</p>
                         <div className="mt-2 pl-4 space-y-1">
-                          <Link href="/shop?category=Electronics">
-                            <a className="block py-1 text-sm text-gray-600 hover:text-gray-900">
-                              Electronics
-                            </a>
+                          <Link 
+                            href="/shop?category=Electronics"
+                            className="block py-1 text-sm text-gray-600 hover:text-gray-900"
+                          >
+                            Electronics
                           </Link>
-                          <Link href="/shop?category=Fashion">
-                            <a className="block py-1 text-sm text-gray-600 hover:text-gray-900">
-                              Fashion
-                            </a>
+                          <Link 
+                            href="/shop?category=Fashion"
+                            className="block py-1 text-sm text-gray-600 hover:text-gray-900"
+                          >
+                            Fashion
                           </Link>
-                          <Link href="/shop?category=Home & Kitchen">
-                            <a className="block py-1 text-sm text-gray-600 hover:text-gray-900">
-                              Home & Kitchen
-                            </a>
+                          <Link 
+                            href="/shop?category=Home & Kitchen"
+                            className="block py-1 text-sm text-gray-600 hover:text-gray-900"
+                          >
+                            Home & Kitchen
                           </Link>
                         </div>
                       </div>
