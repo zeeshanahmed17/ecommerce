@@ -44,9 +44,9 @@ export default function AdminDashboard() {
           {/* Payment Methods Section */}
           <PaymentMethods />
           
-          {/* Data Export Section */}
+          {/* Data Management Section */}
           <div className="mt-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Data Management</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">System Administration</h2>
             <DataExport />
           </div>
         </div>
