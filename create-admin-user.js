@@ -1,5 +1,6 @@
-const crypto = require('crypto');
-const { Pool } = require('pg');
+import crypto from 'crypto';
+import pg from 'pg';
+const { Pool } = pg;
 
 async function generateHashedPassword(password) {
   // Use the same algorithm as in auth.ts

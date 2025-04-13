@@ -183,12 +183,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    // Listen for Firebase authentication state changes
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: any) => {
+    // Since we're using a mock implementation, this is simplified
+    // In a real implementation with Firebase, we would sync with the backend
+    const unsubscribe = auth.onAuthStateChanged((firebaseUser: any) => {
       if (firebaseUser) {
-        // The user is signed in with Firebase
         console.log("Firebase auth state changed: User signed in");
-        // You could sync with backend here if needed
       } else {
         console.log("Firebase auth state changed: User signed out");
       }
