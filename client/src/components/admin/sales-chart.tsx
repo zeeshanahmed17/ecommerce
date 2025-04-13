@@ -42,7 +42,7 @@ export default function SalesChart() {
             <Skeleton className="h-7 w-40" />
           </CardTitle>
           <CardDescription>
-            <Skeleton className="h-4 w-60" />
+            <span><Skeleton className="h-4 w-60" /></span>
           </CardDescription>
         </CardHeader>
         <CardContent>

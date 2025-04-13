@@ -1,0 +1,35 @@
+[vite] connecting...
+[vite] connected.
+Using mock Firebase implementation for development
+Firebase auth state changed: User signed out
+`DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Warning: validateDOMNesting(...): <div> cannot appear as a descendant of &lt;p&gt;.
+    at div
+    at Skeleton (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/ui/skeleton.tsx:19:3)
+    at p
+    at _c7 (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/ui/card.tsx:92:12)
+    at div
+    at _c3 (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/ui/card.tsx:45:12)
+    at div
+    at _c (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/ui/card.tsx:20:11)
+    at SalesChart (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/admin/sales-chart.tsx:48:31)
+    at div
+    at div
+    at div
+    at AdminDashboard (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/pages/admin/dashboard.tsx?t=1744533976485:29:31)
+    at Route (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f2f8295c:323:16)
+    at ProtectedRoute (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/lib/protected-route.tsx?t=1744533976485:22:3)
+    at Switch (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f2f8295c:379:17)
+    at Router
+    at main
+    at div
+    at QueryClientProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f2f8295c:2805:3)
+    at App
+    at CartProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/hooks/use-cart.tsx:21:32)
+    at AuthProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/hooks/use-auth.tsx?t=1744533976485:38:32)
+    at QueryClientProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f2f8295c:2805:3)

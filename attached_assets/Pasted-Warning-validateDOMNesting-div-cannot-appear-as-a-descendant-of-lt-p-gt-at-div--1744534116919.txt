@@ -1,0 +1,65 @@
+Warning: validateDOMNesting(...): <div> cannot appear as a descendant of &lt;p&gt;.
+    at div
+    at Skeleton (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/ui/skeleton.tsx:19:3)
+    at p
+    at _c7 (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/ui/card.tsx:92:12)
+    at div
+    at _c3 (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/ui/card.tsx:45:12)
+    at div
+    at _c (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/ui/card.tsx:20:11)
+    at SalesChart (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/components/admin/sales-chart.tsx:48:31)
+    at div
+    at div
+    at div
+    at AdminDashboard (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/pages/admin/dashboard.tsx?t=1744533976485:29:31)
+    at Route (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f2f8295c:323:16)
+    at ProtectedRoute (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/lib/protected-route.tsx?t=1744533976485:22:3)
+    at Switch (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f2f8295c:379:17)
+    at Router
+    at main
+    at div
+    at QueryClientProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f2f8295c:2805:3)
+    at App
+    at CartProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/hooks/use-cart.tsx:21:32)
+    at AuthProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/hooks/use-auth.tsx?t=1744533976485:38:32)
+    at QueryClientProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f2f8295c:2805:3)
+useEffect is not defined
+useEffect is not defined
+The above error occurred in the <AdminInventory> component:
+
+    at AdminInventory (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/pages/admin/inventory.tsx?t=1744533976485:88:44)
+    at Route (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f2f8295c:323:16)
+    at ProtectedRoute (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/lib/protected-route.tsx?t=1744533976485:22:3)
+    at Switch (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f2f8295c:379:17)
+    at Router
+    at main
+    at div
+    at QueryClientProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f2f8295c:2805:3)
+    at App
+    at CartProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/hooks/use-cart.tsx:21:32)
+    at AuthProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/hooks/use-auth.tsx?t=1744533976485:38:32)
+    at QueryClientProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f2f8295c:2805:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+at AdminInventory (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/pages/admin/inventory.tsx?t=1744533976485:88:44)
+at Route (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f2f8295c:323:16)
+at ProtectedRoute (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/lib/protected-route.tsx?t=1744533976485:22:3)
+at Switch (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f2f8295c:379:17)
+at Router
+at main
+at div
+at QueryClientProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f2f8295c:2805:3)
+at App
+at CartProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/hooks/use-cart.tsx:21:32)
+at AuthProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/hooks/use-auth.tsx?t=1744533976485:38:32)
+at QueryClientProvider (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f2f8295c:2805:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+at t.value (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+useEffect is not defined
