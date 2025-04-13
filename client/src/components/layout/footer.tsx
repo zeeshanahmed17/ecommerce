@@ -56,12 +56,18 @@ export default function Footer() {
               <li><Link href="/faq" className="text-gray-400 hover:text-white">FAQs</Link></li>
               <li><Link href="/shipping" className="text-gray-400 hover:text-white">Shipping & Returns</Link></li>
               <li><Link href="/track-order" className="text-gray-400 hover:text-white">Track Order</Link></li>
+              <li><Link href="/help-center" className="text-gray-400 hover:text-white">Help Center</Link></li>
+              <li><Link href="/size-guide" className="text-gray-400 hover:text-white">Size Guide</Link></li>
+              <li><Link href="/warranty" className="text-gray-400 hover:text-white">Warranty Information</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="text-lg font-medium mb-4">About</h3>
             <ul className="space-y-2">
               <li><Link href="/about" className="text-gray-400 hover:text-white">Our Story</Link></li>
+              <li><Link href="/about/team" className="text-gray-400 hover:text-white">Our Team</Link></li>
+              <li><Link href="/about/sustainability" className="text-gray-400 hover:text-white">Sustainability</Link></li>
+              <li><Link href="/about/investors" className="text-gray-400 hover:text-white">Investors</Link></li>
               <li><Link href="/blog" className="text-gray-400 hover:text-white">Blog</Link></li>
               <li><Link href="/careers" className="text-gray-400 hover:text-white">Careers</Link></li>
               <li><Link href="/privacy" className="text-gray-400 hover:text-white">Privacy Policy</Link></li>
