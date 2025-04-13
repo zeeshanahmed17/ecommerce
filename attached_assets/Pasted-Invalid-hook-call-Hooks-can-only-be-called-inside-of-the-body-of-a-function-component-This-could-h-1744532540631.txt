@@ -1,0 +1,24 @@
+Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.
+Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.
+at Object.throwInvalidHookError (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=f2f8295c:11501:17)
+at useContext (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-QCHXOAYK.js?v=f2f8295c:1062:29)
+at useAuth (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/hooks/use-auth.tsx:204:19)
+at AuthPage.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.onClick (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/src/pages/auth-page.tsx:324:28)
+at HTMLUnknownElement.callCallback2 (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=f2f8295c:3674:22)
+at Object.invokeGuardedCallbackDev (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=f2f8295c:3699:24)
+at invokeGuardedCallback (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=f2f8295c:3733:39)
+at invokeGuardedCallbackAndCatchFirstError (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=f2f8295c:3736:33)
+at executeDispatch (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=f2f8295c:7014:11)
+at processDispatchQueueItemsInOrder (https://1b58fbae-602a-416b-afda-1a0376df6258-00-16syof1re2kc.sisko.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=f2f8295c:7034:15)

@@ -52,7 +52,7 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("login");
-  const { user, loginMutation, registerMutation } = useAuth();
+  const { user, loginMutation, registerMutation, signInWithGoogle } = useAuth();
   const [location] = useLocation();
   
   // Login form
@@ -181,7 +181,7 @@ export default function AuthPage() {
                       type="button" 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => useAuth().signInWithGoogle()}
+                      onClick={() => signInWithGoogle()}
                     >
                       <FcGoogle className="mr-2 h-5 w-5" />
                       Sign in with Google
@@ -305,7 +305,7 @@ export default function AuthPage() {
                       type="button" 
                       variant="outline" 
                       className="w-full"
-                      onClick={() => useAuth().signInWithGoogle()}
+                      onClick={() => signInWithGoogle()}
                     >
                       <FcGoogle className="mr-2 h-5 w-5" />
                       Sign up with Google
