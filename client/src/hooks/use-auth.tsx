@@ -124,18 +124,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Google Sign-in functionality
   const signInWithGoogle = async () => {
     try {
+      // Show toast that we're processing
+      toast({
+        title: "Connecting to Google...",
+        description: "Please wait while we connect to Google.",
+      });
+      
       // Use Firebase Google authentication
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
+      
+      if (!user || !user.email) {
+        throw new Error("Google sign-in didn't return required user information");
+      }
+      
+      console.log("Google auth successful, syncing with backend...");
       
       // Send the user data to our backend to create/update the user
       try {
         const res = await apiRequest("POST", "/api/auth/google", {
           uid: user.uid,
           email: user.email,
-          displayName: user.displayName,
+          displayName: user.displayName || user.email.split('@')[0],
           photoURL: user.photoURL
         });
+        
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || "Server authentication failed");
+        }
         
         const userData = await res.json();
         queryClient.setQueryData(["/api/user"], userData);
@@ -144,6 +161,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           title: "Google sign-in successful",
           description: `Welcome, ${userData.fullName || userData.username}!`,
         });
+        
+        // Refresh user data
+        queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       } catch (backendError: any) {
         console.error("Backend auth failed:", backendError);
         toast({

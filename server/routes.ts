@@ -261,53 +261,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing required user data" });
       }
       
+      console.log("Google auth request received for:", email);
+      
       // Check if user exists by email
       let user = await storage.getUserByEmail(email);
       
       if (!user) {
         try {
-          // Create a new user
+          // Create a new user with a username based on email
           const username = email.split('@')[0] + '_' + Math.floor(Math.random() * 1000);
           const crypto = require('crypto');
+          
+          // Generate a secure random password since Google users won't need it
+          const password = crypto.randomBytes(16).toString('hex');
+          
+          console.log(`Creating new user with username: ${username}`);
           
           user = await storage.createUser({
             username,
             email,
-            fullName: displayName || null,
-            // Generate a random secure password that the user won't need
-            // since they'll authenticate through Google
-            password: crypto.randomBytes(16).toString('hex'),
+            fullName: displayName || email.split('@')[0],
+            password,
             isAdmin: false
           });
+          
+          console.log("User created successfully:", username);
         } catch (createError) {
           console.error("Failed to create user:", createError);
-          
-          // Fallback to a demo user for development
-          user = {
-            id: 1,
-            username: "demo",
-            email: "demo@example.com",
-            fullName: "Demo User",
-            password: "*****", // Password isn't exposed to the client
-            isAdmin: true,
-            createdAt: new Date()
-          };
+          return res.status(500).json({ 
+            message: "Unable to create user account",
+            error: createError instanceof Error ? createError.message : "Unknown error" 
+          });
         }
+      } else {
+        console.log("Existing user found:", user.username);
       }
       
-      // Log in the user manually
+      // Log in the user manually through Passport
       req.login(user, (err) => {
         if (err) {
+          console.error("Login error:", err);
           return res.status(500).json({ message: "Failed to login after Google auth" });
         }
         
         // Return user data without password
         const { password, ...userWithoutPassword } = user;
+        console.log("Google auth successful for:", userWithoutPassword.username);
         return res.status(200).json(userWithoutPassword);
       });
     } catch (error) {
       console.error("Google auth error:", error);
-      res.status(500).json({ message: "Failed to authenticate with Google" });
+      res.status(500).json({ 
+        message: "Failed to authenticate with Google",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
     }
   });
 

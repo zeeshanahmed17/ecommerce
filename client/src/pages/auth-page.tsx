@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { FcGoogle } from "react-icons/fc";
 import { Loader2 } from "lucide-react";
 
 // Extended login schema
@@ -165,6 +167,25 @@ export default function AuthPage() {
                         )}
                       </Button>
                     </form>
+                    
+                    <div className="relative my-6">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-gray-300"></span>
+                      </div>
+                      <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                      </div>
+                    </div>
+                    
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => useAuth().signInWithGoogle()}
+                    >
+                      <FcGoogle className="mr-2 h-5 w-5" />
+                      Sign in with Google
+                    </Button>
                   </Form>
                 </TabsContent>
                 
@@ -270,6 +291,25 @@ export default function AuthPage() {
                         )}
                       </Button>
                     </form>
+                    
+                    <div className="relative my-6">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-gray-300"></span>
+                      </div>
+                      <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                      </div>
+                    </div>
+                    
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => useAuth().signInWithGoogle()}
+                    >
+                      <FcGoogle className="mr-2 h-5 w-5" />
+                      Sign up with Google
+                    </Button>
                   </Form>
                 </TabsContent>
               </Tabs>
