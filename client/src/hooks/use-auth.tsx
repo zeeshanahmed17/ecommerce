@@ -130,6 +130,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         description: "Please wait while we connect to Google.",
       });
       
+      // Check if Firebase is properly configured
+      if (!import.meta.env.VITE_FIREBASE_API_KEY || 
+          !import.meta.env.VITE_FIREBASE_PROJECT_ID || 
+          !import.meta.env.VITE_FIREBASE_APP_ID) {
+        throw new Error("Firebase configuration is incomplete. Please ask an administrator to set up Firebase credentials.");
+      }
+      
       // Use Firebase Google authentication
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
