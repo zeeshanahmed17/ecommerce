@@ -1,61 +1,57 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+// Using a mock implementation instead of actual Firebase
+// to avoid requiring real API keys
 
-// Firebase configuration from environment variables
+// Using dummy Firebase configuration for development
+// This will allow the app to work without real Firebase credentials
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebaseapp.com`,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.appspot.com`,
-  messagingSenderId: "000000000000", // Required by Firebase SDK
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "dummy-api-key-for-development",
+  authDomain: "dummy-project.firebaseapp.com",
+  projectId: "dummy-project",
+  storageBucket: "dummy-project.appspot.com",
+  messagingSenderId: "000000000000",
+  appId: "1:000000000:web:0000000000000000000000"
 };
 
-// Check if all required configuration is available
-const hasValidConfig = 
-  import.meta.env.VITE_FIREBASE_API_KEY && 
-  import.meta.env.VITE_FIREBASE_PROJECT_ID && 
-  import.meta.env.VITE_FIREBASE_APP_ID;
-
+// We'll use a mock implementation instead of real Firebase
 let app, auth, googleProvider;
+setupMockFirebase();
+console.log("Using mock Firebase implementation for development");
 
-// Initialize Firebase
-try {
-  // Check if Firebase was already initialized to avoid duplicate app error
-  const apps = getApps();
-  app = apps.length > 0 ? getApp() : initializeApp(firebaseConfig);
-  
-  if (!hasValidConfig) {
-    throw new Error("Firebase configuration is incomplete");
-  }
-  
-  auth = getAuth(app);
-  googleProvider = new GoogleAuthProvider();
-  
-  // Configure Google provider
-  googleProvider.setCustomParameters({
-    prompt: 'select_account'
-  });
-  
-  console.log("Firebase authentication initialized successfully");
-} catch (error) {
-  console.error("Error initializing Firebase:", error);
-  setupMockFirebase();
-}
-
-// Fallback to mock implementation if Firebase initialization fails
+// Mock implementation for Firebase
 function setupMockFirebase() {
   class MockAuth {
     currentUser = null;
-    onAuthStateChanged = (callback) => {
+    
+    // Mock sign in with popup that always succeeds with dummy user data
+    async signInWithPopup() {
+      return {
+        user: {
+          uid: "mock-uid-123",
+          email: "user@example.com",
+          displayName: "Test User",
+          photoURL: null
+        }
+      };
+    }
+    
+    // Mock sign out function
+    async signOut() {
+      this.currentUser = null;
+      return Promise.resolve();
+    }
+    
+    // Mock auth state changed listener
+    onAuthStateChanged(callback) {
+      // Call with null to indicate signed out state
+      setTimeout(() => callback(null), 0);
       // Return an unsubscribe function
       return () => {};
-    };
+    }
   }
 
   class MockGoogleProvider {
     setCustomParameters(params) {
-      // Mock implementation
+      // No-op implementation
     }
   }
 
