@@ -158,14 +158,26 @@ export default function CheckoutPage() {
       return await res.json();
     },
     onSuccess: (data) => {
+      console.log("Order created successfully:", data);
+      // Set order ID and mark as complete
       setOrderId(data.id);
       setOrderComplete(true);
+      
+      // Clear the cart
       clearCart();
       
+      // Show success message
       toast({
         title: "Order placed successfully!",
         description: `Your order #${data.id} has been confirmed.`,
+        variant: "default",
       });
+      
+      // Force a re-render by updating a state variable
+      setTimeout(() => {
+        // This ensures the UI updates properly
+        setActiveStep("confirmation"); 
+      }, 100);
     },
     onError: (error: Error) => {
       toast({
@@ -226,11 +238,14 @@ export default function CheckoutPage() {
     
     if (!isValid) return;
     
-    // Submit the form data to create an order
-    placeOrderMutation.mutate(data);
-    
-    // Move to confirmation step
+    // Set confirmation step first to show the processing UI
     setActiveStep("confirmation");
+    
+    // Submit the form data to create an order with a slight delay
+    // to allow the confirmation UI to render
+    setTimeout(() => {
+      placeOrderMutation.mutate(data);
+    }, 500);
   };
 
   // If no items in cart, redirect to shop
@@ -692,13 +707,43 @@ export default function CheckoutPage() {
               <TabsContent value="confirmation">
                 <Card>
                   <CardContent className="p-12 text-center">
-                    <Loader2 className="h-12 w-12 animate-spin mx-auto mb-6 text-primary" />
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                      Processing Your Order
-                    </h2>
-                    <p className="text-gray-500">
-                      Please wait while we process your payment. Do not close this page.
-                    </p>
+                    {placeOrderMutation.isPending ? (
+                      <>
+                        <Loader2 className="h-12 w-12 animate-spin mx-auto mb-6 text-primary" />
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                          Processing Your Order
+                        </h2>
+                        <p className="text-gray-500">
+                          Please wait while we process your payment. Do not close this page.
+                        </p>
+                      </>
+                    ) : placeOrderMutation.isError ? (
+                      <>
+                        <XCircle className="h-12 w-12 mx-auto mb-6 text-red-500" />
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                          Something Went Wrong
+                        </h2>
+                        <p className="text-gray-500 mb-6">
+                          We couldn't process your order. Please try again or contact customer support.
+                        </p>
+                        <Button 
+                          variant="outline" 
+                          onClick={() => setActiveStep("payment")}
+                        >
+                          Back to Payment
+                        </Button>
+                      </>
+                    ) : !orderComplete ? (
+                      <>
+                        <Loader2 className="h-12 w-12 animate-spin mx-auto mb-6 text-primary" />
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                          Finalizing Your Order
+                        </h2>
+                        <p className="text-gray-500">
+                          Just a moment while we confirm your purchase...
+                        </p>
+                      </>
+                    ) : null}
                   </CardContent>
                 </Card>
               </TabsContent>
