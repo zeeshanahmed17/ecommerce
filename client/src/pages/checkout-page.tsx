@@ -193,6 +193,39 @@ export default function CheckoutPage() {
       return;
     }
     
+    // Validate payment method specific fields
+    let isValid = true;
+    if (data.payment.paymentMethod === 'card') {
+      if (!data.payment.cardNumber || !data.payment.cardName || !data.payment.expiryDate || !data.payment.cvv) {
+        toast({
+          title: "Incomplete card details",
+          description: "Please fill in all card information fields",
+          variant: "destructive",
+        });
+        isValid = false;
+      }
+    } else if (data.payment.paymentMethod === 'upi') {
+      if (!data.payment.upiId) {
+        toast({
+          title: "UPI ID required",
+          description: "Please enter your UPI ID",
+          variant: "destructive",
+        });
+        isValid = false;
+      }
+    } else if (data.payment.paymentMethod === 'wallet') {
+      if (!data.payment.walletType) {
+        toast({
+          title: "Wallet selection required",
+          description: "Please select a wallet type",
+          variant: "destructive",
+        });
+        isValid = false;
+      }
+    }
+    
+    if (!isValid) return;
+    
     // Submit the form data to create an order
     placeOrderMutation.mutate(data);
     
