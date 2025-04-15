@@ -138,55 +138,66 @@ export default function HomePage() {
       </div>
 
       {/* Special Offers */}
-      <div className="bg-gray-800 text-white py-12">
+      <div className="bg-gradient-to-r from-indigo-900 to-purple-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:flex lg:items-center lg:justify-between">
             <div className="lg:w-1/2">
-              <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Summer Sale
-              </h2>
-              <p className="mt-3 text-xl">
-                Enjoy up to 50% off on selected items. Limited time offer!
+              <div className="relative">
+                <div className="absolute -top-6 -left-6">
+                  <div className="bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full transform -rotate-12">
+                    LIMITED TIME
+                  </div>
+                </div>
+                <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl leading-tight">
+                  Summer Collection <br />
+                  <span className="text-yellow-400">Flash Sale</span>
+                </h2>
+              </div>
+              <p className="mt-4 text-xl text-indigo-100">
+                Exclusive savings on our premium products. 
+                Up to 50% off on selected items until supplies last!
               </p>
-              <div className="mt-8 flex lg:mt-6">
+              <div className="mt-8 flex flex-wrap gap-4">
                 <Link href="/shop?discount=true">
-                  <Button variant="default" className="bg-white text-gray-900 hover:bg-gray-50">
-                    Shop the Sale
+                  <Button variant="default" className="bg-white text-indigo-900 hover:bg-gray-100 font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Shop Now
                   </Button>
                 </Link>
                 <Link href="/about/sale">
-                  <Button variant="outline" className="ml-3 border-white text-white hover:bg-gray-700">
-                    Learn more
+                  <Button variant="outline" className="border-2 border-white text-white hover:bg-white/10 font-medium">
+                    View Details
                   </Button>
                 </Link>
               </div>
             </div>
-            <div className="mt-10 lg:mt-0 lg:w-1/2">
-              <div className="pl-4 flex items-center">
-                <div className="flex-1">
-                  <div className="bg-primary rounded-lg px-6 py-8 lg:p-10">
-                    <div className="text-center">
-                      <h3 className="text-2xl font-extrabold text-white">
-                        Get 10% Off Your First Order
-                      </h3>
-                      <p className="mt-4 text-lg text-indigo-100">
-                        Subscribe to our newsletter for exclusive deals and updates.
-                      </p>
-                      <form className="mt-6">
-                        <div className="flex max-w-md mx-auto">
-                          <input
-                            type="email"
-                            required
-                            placeholder="Enter your email"
-                            className="min-w-0 flex-auto appearance-none rounded-md border border-transparent bg-white px-3 py-3 text-base text-gray-900 placeholder-gray-500 focus:border-white focus:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary"
-                          />
-                          <Button className="ml-4 bg-gray-900 px-3.5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary">
-                            Subscribe
-                          </Button>
-                        </div>
-                      </form>
-                    </div>
+            <div className="mt-12 lg:mt-0 lg:w-1/2">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-8 lg:p-10 border border-white/20 shadow-xl">
+                <div className="text-center">
+                  <div className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 p-1 rounded-full mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-black w-8 h-8 p-1">
+                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                    </svg>
                   </div>
+                  <h3 className="text-2xl font-extrabold text-white">
+                    Exclusive Member Benefits
+                  </h3>
+                  <p className="mt-4 text-lg text-indigo-100">
+                    Join our community for early access to sales, 
+                    exclusive offers, and premium content.
+                  </p>
+                  <form className="mt-6">
+                    <div className="flex flex-col sm:flex-row max-w-md mx-auto gap-3">
+                      <input
+                        type="email"
+                        required
+                        placeholder="Enter your email"
+                        className="min-w-0 flex-auto appearance-none rounded-md border border-white/20 bg-white/5 backdrop-blur-sm px-4 py-3 text-base text-white placeholder-white/60 focus:border-white focus:placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/30"
+                      />
+                      <Button className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
+                        Join Now
+                      </Button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
