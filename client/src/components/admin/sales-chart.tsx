@@ -38,12 +38,10 @@ export default function SalesChart() {
     return (
       <Card className="mb-8">
         <CardHeader className="pb-2">
-          <CardTitle>
+          <div className="space-y-2">
             <Skeleton className="h-7 w-40" />
-          </CardTitle>
-          <CardDescription>
-            <span><Skeleton className="h-4 w-60" /></span>
-          </CardDescription>
+            <Skeleton className="h-4 w-60" />
+          </div>
         </CardHeader>
         <CardContent>
           <Skeleton className="h-[350px] w-full" />
