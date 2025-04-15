@@ -182,9 +182,21 @@ export default function CheckoutPage() {
   };
 
   // Handle form submission for payment step
-  const onPaymentSubmit = () => {
-    const formValues = form.getValues();
-    placeOrderMutation.mutate(formValues);
+  const onPaymentSubmit = (data: CheckoutFormValues) => {
+    // Make sure we have complete data before submitting
+    if (!data?.payment?.paymentMethod) {
+      toast({
+        title: "Payment method required",
+        description: "Please select a payment method to continue",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Submit the form data to create an order
+    placeOrderMutation.mutate(data);
+    
+    // Move to confirmation step
     setActiveStep("confirmation");
   };
 
