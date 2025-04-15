@@ -121,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   });
 
-  // Google Sign-in functionality
+  // Google Sign-in functionality with real Firebase
   const signInWithGoogle = async () => {
     try {
       // Show toast that we're processing
@@ -130,15 +130,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         description: "Please wait while we connect to Google.",
       });
       
-      // Use Firebase Google authentication (mock implementation)
-      const result = await auth.signInWithPopup(googleProvider);
+      // Use Firebase Google authentication
+      const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       
       if (!user || !user.email) {
         throw new Error("Google sign-in didn't return required user information");
       }
       
-      console.log("Google auth successful (mock), syncing with backend...");
+      console.log("Google auth successful, syncing with backend...");
       
       // Send the user data to our backend to create/update the user
       try {
@@ -183,11 +183,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    // Since we're using a mock implementation, this is simplified
-    // In a real implementation with Firebase, we would sync with the backend
-    const unsubscribe = auth.onAuthStateChanged((firebaseUser: any) => {
+    // Using real Firebase implementation
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         console.log("Firebase auth state changed: User signed in");
+        // If needed, we can sync with backend here
+        // For now we'll keep this simple since our main auth is handled elsewhere
       } else {
         console.log("Firebase auth state changed: User signed out");
       }
