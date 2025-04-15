@@ -30,7 +30,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SalesChart() {
   const [period, setPeriod] = useState("monthly");
-  const { data: revenueData, isLoading } = useQuery({
+  const { data: revenueData, isLoading } = useQuery<{
+    daily: { date: string; revenue: number }[];
+    weekly: { week: string; revenue: number }[];
+    monthly: { month: string; revenue: number }[];
+  }>({
     queryKey: ["/api/analytics/revenue"],
   });
 
@@ -51,7 +55,7 @@ export default function SalesChart() {
   }
 
   // If no data is available, show an error state
-  if (!revenueData || (!revenueData.daily && !revenueData.weekly && !revenueData.monthly)) {
+  if (!revenueData || (!revenueData.daily?.length && !revenueData.weekly?.length && !revenueData.monthly?.length)) {
     return (
       <Card className="mb-8">
         <CardHeader>
@@ -65,9 +69,9 @@ export default function SalesChart() {
     );
   }
 
-  let chartData = revenueData.monthly;
-  if (period === "weekly") chartData = revenueData.weekly;
-  if (period === "daily") chartData = revenueData.daily;
+  let chartData = revenueData.monthly || [];
+  if (period === "weekly") chartData = revenueData.weekly || [];
+  if (period === "daily") chartData = revenueData.daily || [];
 
   return (
     <Card className="mb-8">
