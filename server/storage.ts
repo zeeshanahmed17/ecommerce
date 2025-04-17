@@ -297,21 +297,40 @@ export class MemStorage implements IStorage {
   }
 
   async getRevenueStats(): Promise<{daily: any[], weekly: any[], monthly: any[]}> {
-    // In a real database, we would use SQL aggregations
-    // For this in-memory version, we'll create mock analytics data
+    const dailyResults = await db.execute(sql`
+      SELECT 
+        DATE(created_at) as date,
+        SUM(total) as revenue
+      FROM orders
+      WHERE created_at > NOW() - INTERVAL '30 days'
+      GROUP BY DATE(created_at)
+      ORDER BY date DESC
+    `);
+
+    const weeklyResults = await db.execute(sql`
+      SELECT 
+        EXTRACT(WEEK FROM created_at) as week,
+        SUM(total) as revenue
+      FROM orders
+      WHERE created_at > NOW() - INTERVAL '12 weeks'
+      GROUP BY EXTRACT(WEEK FROM created_at)
+      ORDER BY week DESC
+    `);
+
+    const monthlyResults = await db.execute(sql`
+      SELECT 
+        TO_CHAR(created_at, 'Mon') as month,
+        SUM(total) as revenue
+      FROM orders
+      WHERE created_at > NOW() - INTERVAL '12 months'
+      GROUP BY TO_CHAR(created_at, 'Mon')
+      ORDER BY MIN(created_at) DESC
+    `);
+
     return {
-      daily: Array.from({ length: 30 }, (_, i) => ({
-        date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-        revenue: Math.floor(Math.random() * 1000) + 500
-      })),
-      weekly: Array.from({ length: 12 }, (_, i) => ({
-        week: `Week ${i+1}`,
-        revenue: Math.floor(Math.random() * 5000) + 2000
-      })),
-      monthly: Array.from({ length: 12 }, (_, i) => ({
-        month: new Date(2023, i, 1).toLocaleString('default', { month: 'short' }),
-        revenue: Math.floor(Math.random() * 20000) + 10000
-      }))
+      daily: dailyResults.rows,
+      weekly: weeklyResults.rows,
+      monthly: monthlyResults.rows
     };
   }
 
