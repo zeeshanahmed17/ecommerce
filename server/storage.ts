@@ -79,7 +79,78 @@ export class MemStorage implements IStorage {
       createdAt: new Date()
     });
     
-    }
+    // Add some sample products
+    this.initializeProducts();
+  }
+
+  private initializeProducts() {
+    const sampleProducts: InsertProduct[] = [
+      {
+        name: "Premium Headphones",
+        description: "Superior sound quality for music lovers. Features active noise cancellation and 20 hour battery life.",
+        price: 149.99,
+        imageUrl: "https://images.unsplash.com/photo-1560343090-f0409e92791a?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=500&q=80",
+        category: "Electronics",
+        inventory: 23,
+        sku: "HP-100-BK",
+        featured: true,
+      },
+      {
+        name: "Smartwatch Pro",
+        description: "Track fitness and stay connected with this premium smartwatch. Features heart rate monitoring and GPS.",
+        price: 199.99,
+        imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=500&q=80",
+        category: "Electronics",
+        inventory: 15,
+        sku: "SW-PRO-BK",
+        featured: true,
+      },
+      {
+        name: "Eco-Friendly Water Bottle",
+        description: "Sustainable hydration solution that keeps your drinks cold for 24 hours or hot for 12 hours.",
+        price: 24.99,
+        imageUrl: "https://images.unsplash.com/photo-1625772452859-1c03d5bf1137?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=500&q=80",
+        category: "Home & Kitchen",
+        inventory: 50,
+        sku: "WB-ECO-GR",
+        featured: true,
+      },
+      {
+        name: "Running Shoes",
+        description: "Professional athletic footwear with shock absorption and breathable material.",
+        price: 89.99,
+        imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=500&q=80",
+        category: "Fashion",
+        inventory: 35,
+        sku: "RN-SH-BL-10",
+        featured: true,
+      },
+      {
+        name: "Wireless Phone Charger",
+        description: "Fast 15W wireless charging pad compatible with all Qi-enabled devices.",
+        price: 29.99,
+        imageUrl: "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=500&q=80",
+        category: "Electronics",
+        inventory: 45,
+        sku: "CH-WL-10W",
+        featured: false,
+      },
+      {
+        name: "Organic Cotton T-Shirt",
+        description: "Soft, sustainable cotton t-shirt with a classic fit.",
+        price: 19.99,
+        imageUrl: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=500&q=80",
+        category: "Fashion",
+        inventory: 100,
+        sku: "TS-ORG-BL-M",
+        featured: false,
+      }
+    ];
+    
+    sampleProducts.forEach(product => {
+      this.createProduct(product);
+    });
+  }
 
   // User operations
   async getUser(id: number): Promise<User | undefined> {
