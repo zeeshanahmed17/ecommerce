@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Payment Flow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Payment Flow</h1>
+    
+    <div class="container" id="paymentForm">
+        <h2>Payment Information</h2>
+        
+        <div>
+            <label for="paymentMethod">Payment Method:</label>
+            <select id="paymentMethod">
+                <option value="card">Credit Card</option>
+                <option value="upi">UPI</option>
+                <option value="wallet">Digital Wallet</option>
+            </select>
+        </div>
+        
+        <!-- Credit Card Fields -->
+        <div id="cardFields">
+            <div>
+                <label for="cardNumber">Card Number:</label>
+                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+            </div>
+            <div>
+                <label for="cardName">Name on Card:</label>
+                <input type="text" id="cardName" placeholder="John Doe">
+            </div>
+            <div>
+                <label for="expiryDate">Expiry Date:</label>
+                <input type="text" id="expiryDate" placeholder="MM/YY">
+            </div>
+            <div>
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" placeholder="123">
+            </div>
+        </div>
+        
+        <!-- UPI Fields -->
+        <div id="upiFields" class="hidden">
+            <div>
+                <label for="upiId">UPI ID:</label>
+                <input type="text" id="upiId" placeholder="username@bankname">
+            </div>
+        </div>
+        
+        <!-- Wallet Fields -->
+        <div id="walletFields" class="hidden">
+            <div>
+                <label for="walletType">Select Wallet:</label>
+                <select id="walletType">
+                    <option value="paypal">PayPal</option>
+                    <option value="applepay">Apple Pay</option>
+                    <option value="amazonpay">Amazon Pay</option>
+                </select>
+            </div>
+        </div>
+        
+        <button id="placeOrderBtn">Place Order</button>
+    </div>
+    
+    <div class="container hidden" id="processingView">
+        <h2>Processing Your Order</h2>
+        <p>Please wait while we process your payment. Do not close this page.</p>
+    </div>
+    
+    <div class="container hidden" id="confirmationView">
+        <h2>Thank You for Your Order!</h2>
+        <p class="success">Your order has been placed successfully.</p>
+        <p>Order #<span id="orderId">12345</span> has been confirmed.</p>
+        <button id="returnBtn">Return to Shopping</button>
+    </div>
+    
+    <div class="container hidden" id="errorView">
+        <h2>Something Went Wrong</h2>
+        <p class="error">We couldn't process your order. Please try again or contact customer support.</p>
+        <p id="errorMessage"></p>
+        <button id="tryAgainBtn">Try Again</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show/hide payment fields based on payment method
+            const paymentMethodSelect = document.getElementById('paymentMethod');
+            const cardFields = document.getElementById('cardFields');
+            const upiFields = document.getElementById('upiFields');
+            const walletFields = document.getElementById('walletFields');
+            
+            paymentMethodSelect.addEventListener('change', function() {
+                // Hide all field sets
+                cardFields.classList.add('hidden');
+                upiFields.classList.add('hidden');
+                walletFields.classList.add('hidden');
+                
+                // Show the selected field set
+                if (this.value === 'card') {
+                    cardFields.classList.remove('hidden');
+                } else if (this.value === 'upi') {
+                    upiFields.classList.remove('hidden');
+                } else if (this.value === 'wallet') {
+                    walletFields.classList.remove('hidden');
+                }
+            });
+            
+            // Handle place order button click
+            const placeOrderBtn = document.getElementById('placeOrderBtn');
+            placeOrderBtn.addEventListener('click', function() {
+                // Show processing view
+                document.getElementById('paymentForm').classList.add('hidden');
+                document.getElementById('processingView').classList.remove('hidden');
+                
+                // Simulate API call delay
+                setTimeout(function() {
+                    // Simulate a mock successful response
+                    const mockOrderId = Math.floor(Math.random() * 10000) + 1;
+                    
+                    // Update the order ID in the confirmation view
+                    document.getElementById('orderId').textContent = mockOrderId;
+                    
+                    // Show confirmation view
+                    document.getElementById('processingView').classList.add('hidden');
+                    document.getElementById('confirmationView').classList.remove('hidden');
+                }, 2000);
+            });
+            
+            // Handle return button click
+            const returnBtn = document.getElementById('returnBtn');
+            returnBtn.addEventListener('click', function() {
+                // Reset the form
+                document.getElementById('confirmationView').classList.add('hidden');
+                document.getElementById('paymentForm').classList.remove('hidden');
+            });
+            
+            // Handle try again button click
+            const tryAgainBtn = document.getElementById('tryAgainBtn');
+            tryAgainBtn.addEventListener('click', function() {
+                document.getElementById('errorView').classList.add('hidden');
+                document.getElementById('paymentForm').classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html> 

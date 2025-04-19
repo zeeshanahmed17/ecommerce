@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "52df6c2c177291aedabf0a20d336b54dd80b04fada59cd1febaf70d301483e3a13260e0d2d3a1429a291c75f226ebfa085bc904622c2a9ba9257964cac215239.5311252135811a41f77df4eecbb424fa",
+      "email": "admin@shopelite.com",
+      "fullName": "Admin User",
+      "isAdmin": true,
+      "createdAt": "2025-04-19T06:54:52.802Z"
+    },
+    {
+      "username": "zeeshan",
+      "password": "a93c4cd7a931202caaf3de66b696f5aa3dad372b46ef43220b442e4dcf9ac4a1b01a06f9d2f1b4aa0692768fb4470c9e7efddfead97bf6f55e1897fb870c343b.cede0fa6b3077444845412d72659bfc1",
+      "email": "shailafaraz4915@gmail.com",
+      "fullName": "Zeeshan Ahmed",
+      "confirmPassword": "zee",
+      "id": 2,
+      "createdAt": "2025-04-19T08:17:00.264Z",
+      "isAdmin": false
+    },
+    {
+      "username": "Saif",
+      "password": "407bdb45ce8ee4216d0643fd1860ec0a2f2974ecc97cc9112f74886fb998f043f0e4f498ac60d626d502f1253d5bd7130dbac32441b71f010f380b717cdc4ec5.326700c4f2c790d560eb68a749f4f045",
+      "email": "zeeshanahmed5003@gmail.com",
+      "fullName": "Saif ahmed",
+      "confirmPassword": "zee",
+      "id": 3,
+      "createdAt": "2025-04-19T09:01:50.640Z",
+      "isAdmin": false
+    }
+  ],
+  "nextUserId": 4
+}

@@ -20,6 +20,7 @@ import {
   Minus, 
   Check 
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ProductPage() {
   const [match, params] = useRoute<{ id: string }>("/product/:id");
@@ -27,6 +28,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const { addItem, isProductInCart } = useCart();
   const productInCart = isProductInCart(productId);
+  const { toast } = useToast();
 
   // Fetch product details
   const { data: product, isLoading, error } = useQuery<Product>({
@@ -35,7 +37,17 @@ export default function ProductPage() {
   });
 
   // Handle quantity changes
-  const increaseQuantity = () => setQuantity(prev => prev + 1);
+  const increaseQuantity = () => {
+    if (product && quantity < product.inventory) {
+      setQuantity(prev => prev + 1);
+    } else {
+      toast({
+        title: "Maximum quantity reached",
+        description: `Only ${product?.inventory} items available in stock.`,
+      });
+    }
+  };
+
   const decreaseQuantity = () => setQuantity(prev => prev > 1 ? prev - 1 : 1);
 
   // Add to cart with selected quantity

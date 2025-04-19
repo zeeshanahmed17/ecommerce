@@ -16,7 +16,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Search, User, ShoppingCart, Menu, Settings } from "lucide-react";
+import { Search, User, ShoppingCart, Menu, Settings, Package } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
@@ -116,6 +116,9 @@ export default function Navbar() {
                       </span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
+                    <DropdownMenuItem onSelect={() => navigate("/my-orders")}>
+                      My Orders
+                    </DropdownMenuItem>
                     {user.isAdmin && (
                       <>
                         <DropdownMenuItem onSelect={() => navigate("/admin")}>
@@ -237,6 +240,11 @@ export default function Navbar() {
                               </Button>
                             </Link>
                           )}
+                          <Link href="/my-orders">
+                            <Button variant="outline" className="w-full">
+                              My Orders
+                            </Button>
+                          </Link>
                           <Button variant="default" className="w-full" onClick={handleLogout}>
                             Logout
                           </Button>

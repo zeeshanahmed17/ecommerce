@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "fe9e09312d41bac3954e5a54cd5a310a1f2c850e5cdce2dfddf1c7f7ffb7ccb124fef390172a203e9b2227ccd6c64fc9c95cecc936dbc1e62b3bedb33b5c08f2.05a352dc90cdb46eb90843e3d3db610a",
+      "email": "admin@shopelite.com",
+      "fullName": "Admin User",
+      "isAdmin": true,
+      "createdAt": "2025-04-19T11:30:50.808Z"
+    },
+    {
+      "username": "Zarqan ",
+      "password": "2f68d5302d987163367c19a7f9774ae9f537feb81ad92306cafd83754f038b9dd245b084b5d63073ff04e09e9684e90f61211cbd3aac909ec0bc828dc7ac43ba.9996696255538dcf9be5ac83b4c6d2a4",
+      "email": "zarqannazeer4567@gmail.com",
+      "fullName": "Zarqan Nazeer",
+      "confirmPassword": "123456",
+      "id": 2,
+      "createdAt": "2025-04-19T11:54:12.149Z",
+      "isAdmin": false
+    }
+  ],
+  "nextUserId": 3
+}

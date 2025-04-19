@@ -18,10 +18,28 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowRightIcon } from "lucide-react";
+import { getQueryFn } from "@/lib/queryClient";
+
+// Product type
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+  inventory: number;
+  sku: string;
+  featured: boolean;
+}
 
 export default function LowStock() {
-  const { data: products, isLoading } = useQuery({
-    queryKey: ["/api/analytics/low-stock"],
+  const { data: products, isLoading } = useQuery<Product[]>({
+    queryKey: ["/api/analytics/low-stock-products"],
+    queryFn: getQueryFn(),
+    refetchOnWindowFocus: true,
+    refetchInterval: 5000, // Refresh every 5 seconds
+    staleTime: 1000, // Consider data stale after 1 second
   });
 
   if (isLoading) {

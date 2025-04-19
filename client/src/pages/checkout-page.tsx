@@ -131,11 +131,14 @@ export default function CheckoutPage() {
         walletType: "paypal"
       }
     },
+    mode: "onSubmit",
   });
 
   // Submit order mutation
   const placeOrderMutation = useMutation({
     mutationFn: async (data: CheckoutFormValues) => {
+      console.log("Submitting order data:", data);
+      
       // Create order items from cart
       const orderItems = items.map(item => ({
         productId: item.productId,
@@ -143,7 +146,7 @@ export default function CheckoutPage() {
         price: item.product.price
       }));
       
-      // Create order data
+      // Create order data with only primitive types for SQLite compatibility
       const orderData = {
         order: {
           total: totalAmount,
@@ -151,11 +154,21 @@ export default function CheckoutPage() {
           paymentStatus: "pending", // Initially all payments are pending
           shippingAddress: `${data.shipping.fullName}, ${data.shipping.address}, ${data.shipping.city}, ${data.shipping.state} ${data.shipping.postalCode}, ${data.shipping.country}`
         },
-        items: orderItems
+        items: orderItems.map(item => ({
+          productId: Number(item.productId),
+          quantity: Number(item.quantity),
+          price: Number(item.price)
+        }))
       };
       
-      const res = await apiRequest("POST", "/api/orders", orderData);
-      return await res.json();
+      try {
+        // The API call now uses our mock implementation for /api/orders
+        const res = await apiRequest("POST", "/api/orders", orderData);
+        return await res.json();
+      } catch (error) {
+        console.error("Order API request error:", error);
+        throw error;
+      }
     },
     onSuccess: (data) => {
       console.log("Order created successfully:", data);
@@ -180,23 +193,47 @@ export default function CheckoutPage() {
       }, 100);
     },
     onError: (error: Error) => {
+      console.error("Order mutation error:", error);
       toast({
         title: "Failed to place order",
-        description: error.message,
+        description: error.message || "An unexpected error occurred",
         variant: "destructive",
       });
+      
+      // Go back to payment step on error
+      setActiveStep("payment");
     },
   });
 
   // Handle form submission for shipping step
   const onShippingSubmit = () => {
-    setActiveStep("payment");
+    console.log("Shipping form submitted", form.getValues("shipping"));
+    
+    // Validate the shipping form using react-hook-form's validation
+    form.trigger("shipping").then(isValid => {
+      if (!isValid) {
+        console.log("Shipping form validation failed");
+        toast({
+          title: "Missing Information",
+          description: "Please fill in all required shipping fields.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      console.log("Shipping form validation passed, proceeding to payment");
+      // Move to payment step
+      setActiveStep("payment");
+    });
   };
 
   // Handle form submission for payment step
   const onPaymentSubmit = (data: CheckoutFormValues) => {
+    console.log("Payment form submitted:", data.payment);
+    
     // Make sure we have complete data before submitting
     if (!data?.payment?.paymentMethod) {
+      console.log("Payment method missing");
       toast({
         title: "Payment method required",
         description: "Please select a payment method to continue",
@@ -207,45 +244,76 @@ export default function CheckoutPage() {
     
     // Validate payment method specific fields
     let isValid = true;
-    if (data.payment.paymentMethod === 'card') {
-      if (!data.payment.cardNumber || !data.payment.cardName || !data.payment.expiryDate || !data.payment.cvv) {
-        toast({
-          title: "Incomplete card details",
-          description: "Please fill in all card information fields",
-          variant: "destructive",
-        });
-        isValid = false;
+    
+    try {
+      if (data.payment.paymentMethod === 'card') {
+        console.log("Validating card details");
+        if (!data.payment.cardNumber || !data.payment.cardName || !data.payment.expiryDate || !data.payment.cvv) {
+          console.log("Card details incomplete");
+          toast({
+            title: "Incomplete card details",
+            description: "Please fill in all card information fields",
+            variant: "destructive",
+          });
+          isValid = false;
+        }
+      } else if (data.payment.paymentMethod === 'upi') {
+        console.log("Validating UPI details");
+        if (!data.payment.upiId) {
+          console.log("UPI ID missing");
+          toast({
+            title: "UPI ID required",
+            description: "Please enter your UPI ID",
+            variant: "destructive",
+          });
+          isValid = false;
+        }
+      } else if (data.payment.paymentMethod === 'wallet') {
+        console.log("Validating wallet details");
+        if (!data.payment.walletType) {
+          console.log("Wallet type missing");
+          toast({
+            title: "Wallet selection required",
+            description: "Please select a wallet type",
+            variant: "destructive",
+          });
+          isValid = false;
+        }
       }
-    } else if (data.payment.paymentMethod === 'upi') {
-      if (!data.payment.upiId) {
-        toast({
-          title: "UPI ID required",
-          description: "Please enter your UPI ID",
-          variant: "destructive",
-        });
-        isValid = false;
+      
+      if (!isValid) {
+        console.log("Payment validation failed");
+        return;
       }
-    } else if (data.payment.paymentMethod === 'wallet') {
-      if (!data.payment.walletType) {
-        toast({
-          title: "Wallet selection required",
-          description: "Please select a wallet type",
-          variant: "destructive",
-        });
-        isValid = false;
-      }
+      
+      console.log("Payment validation passed, proceeding to confirmation");
+      
+      // Set confirmation step to show processing UI
+      setActiveStep("confirmation");
+      
+      // Submit the order data using our mutation
+      setTimeout(() => {
+        try {
+          placeOrderMutation.mutate(data);
+        } catch (error) {
+          console.error("Order mutation error:", error);
+          toast({
+            title: "Error processing order",
+            description: "An unexpected error occurred. Please try again.",
+            variant: "destructive",
+          });
+          // Go back to payment step on error
+          setActiveStep("payment");
+        }
+      }, 500);
+    } catch (error) {
+      console.error("Error in payment submission:", error);
+      toast({
+        title: "Error processing payment",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
     }
-    
-    if (!isValid) return;
-    
-    // Set confirmation step first to show the processing UI
-    setActiveStep("confirmation");
-    
-    // Submit the form data to create an order with a slight delay
-    // to allow the confirmation UI to render
-    setTimeout(() => {
-      placeOrderMutation.mutate(data);
-    }, 500);
   };
 
   // If no items in cart, redirect to shop
@@ -305,13 +373,35 @@ export default function CheckoutPage() {
           <div className="lg:w-2/3">
             <Tabs value={activeStep} onValueChange={(value) => setActiveStep(value as any)}>
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="shipping" disabled={activeStep !== "shipping"}>
+                <TabsTrigger 
+                  value="shipping" 
+                  className="cursor-pointer"
+                  onClick={() => {
+                    if (activeStep !== "shipping") {
+                      setActiveStep("shipping");
+                    }
+                  }}
+                >
                   1. Shipping
                 </TabsTrigger>
-                <TabsTrigger value="payment" disabled={activeStep === "shipping"}>
+                <TabsTrigger 
+                  value="payment" 
+                  className="cursor-pointer"
+                  onClick={() => {
+                    if (activeStep === "shipping") {
+                      onShippingSubmit();
+                    } else if (activeStep === "confirmation") {
+                      setActiveStep("payment");
+                    }
+                  }}
+                >
                   2. Payment
                 </TabsTrigger>
-                <TabsTrigger value="confirmation" disabled={activeStep !== "confirmation"}>
+                <TabsTrigger 
+                  value="confirmation" 
+                  className="cursor-pointer"
+                  disabled={true}
+                >
                   3. Confirmation
                 </TabsTrigger>
               </TabsList>
@@ -450,7 +540,27 @@ export default function CheckoutPage() {
                           )}
                         />
                         
-                        <Button type="submit" className="w-full">
+                        <Button 
+                          type="submit" 
+                          className="w-full"
+                          onClick={() => {
+                            console.log("Continue to Payment clicked");
+                            // Trigger full form validation
+                            form.trigger("shipping").then(isValid => {
+                              if (isValid) {
+                                console.log("Shipping form is valid, proceeding to payment");
+                                setActiveStep("payment");
+                              } else {
+                                console.log("Shipping form validation failed");
+                                toast({
+                                  title: "Missing Information",
+                                  description: "Please fill in all required shipping fields.",
+                                  variant: "destructive",
+                                });
+                              }
+                            });
+                          }}
+                        >
                           Continue to Payment <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                       </form>
@@ -485,61 +595,37 @@ export default function CheckoutPage() {
                                 >
                                   <FormItem className="flex flex-col items-center space-y-3">
                                     <FormControl>
-                                      <RadioGroupItem 
-                                        value="card" 
-                                        id="card" 
-                                        className="sr-only"
-                                      />
+                                      <RadioGroupItem value="card" id="card" className="sr-only" />
                                     </FormControl>
                                     <label
                                       htmlFor="card"
-                                      className={`flex flex-col items-center justify-center w-full p-4 border-2 rounded-lg cursor-pointer ${
-                                        field.value === "card"
-                                          ? "border-primary bg-primary/5"
-                                          : "border-gray-200"
-                                      }`}
+                                      className="flex flex-col items-center justify-center w-full p-4 border-2 rounded-lg cursor-pointer border-primary bg-primary/5"
                                     >
-                                      <CreditCard className={`h-8 w-8 mb-2 ${field.value === "card" ? "text-primary" : "text-gray-400"}`} />
+                                      <CreditCard className="h-8 w-8 mb-2 text-primary" />
                                       <span className="text-sm font-medium">Credit Card</span>
                                     </label>
                                   </FormItem>
                                   <FormItem className="flex flex-col items-center space-y-3">
                                     <FormControl>
-                                      <RadioGroupItem 
-                                        value="upi" 
-                                        id="upi" 
-                                        className="sr-only"
-                                      />
+                                      <RadioGroupItem value="upi" id="upi" className="sr-only" />
                                     </FormControl>
                                     <label
                                       htmlFor="upi"
-                                      className={`flex flex-col items-center justify-center w-full p-4 border-2 rounded-lg cursor-pointer ${
-                                        field.value === "upi"
-                                          ? "border-primary bg-primary/5"
-                                          : "border-gray-200"
-                                      }`}
+                                      className="flex flex-col items-center justify-center w-full p-4 border-2 rounded-lg cursor-pointer border-gray-200"
                                     >
-                                      <Smartphone className={`h-8 w-8 mb-2 ${field.value === "upi" ? "text-primary" : "text-gray-400"}`} />
+                                      <Smartphone className="h-8 w-8 mb-2 text-gray-400" />
                                       <span className="text-sm font-medium">UPI</span>
                                     </label>
                                   </FormItem>
                                   <FormItem className="flex flex-col items-center space-y-3">
                                     <FormControl>
-                                      <RadioGroupItem 
-                                        value="wallet" 
-                                        id="wallet" 
-                                        className="sr-only"
-                                      />
+                                      <RadioGroupItem value="wallet" id="wallet" className="sr-only" />
                                     </FormControl>
                                     <label
                                       htmlFor="wallet"
-                                      className={`flex flex-col items-center justify-center w-full p-4 border-2 rounded-lg cursor-pointer ${
-                                        field.value === "wallet"
-                                          ? "border-primary bg-primary/5"
-                                          : "border-gray-200"
-                                      }`}
+                                      className="flex flex-col items-center justify-center w-full p-4 border-2 rounded-lg cursor-pointer border-gray-200"
                                     >
-                                      <Wallet className={`h-8 w-8 mb-2 ${field.value === "wallet" ? "text-primary" : "text-gray-400"}`} />
+                                      <Wallet className="h-8 w-8 mb-2 text-gray-400" />
                                       <span className="text-sm font-medium">Wallet</span>
                                     </label>
                                   </FormItem>
@@ -678,7 +764,11 @@ export default function CheckoutPage() {
                           <Button 
                             type="button" 
                             variant="outline"
-                            onClick={() => setActiveStep("shipping")}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              console.log("Going back to shipping step");
+                              setActiveStep("shipping");
+                            }}
                           >
                             Back to Shipping
                           </Button>
@@ -824,8 +914,7 @@ export default function CheckoutPage() {
                   <p className="text-xs text-gray-500 mt-1">
                     {shippingCost === 0 
                       ? "Free shipping for orders over $50"
-                      : "Estimated delivery: 3-5 business days"
-                    }
+                      : "Estimated delivery: 3-5 business days"}
                   </p>
                 </div>
               </CardContent>

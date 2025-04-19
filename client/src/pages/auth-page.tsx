@@ -31,7 +31,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FcGoogle } from "react-icons/fc";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 
 // Extended login schema
 const loginSchema = z.object({
@@ -40,12 +40,16 @@ const loginSchema = z.object({
 });
 
 // Extended registration schema
-const registerSchema = insertUserSchema.extend({
-  confirmPassword: z.string().min(1, "Please confirm your password"),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const registerSchema = insertUserSchema
+  .extend({
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+    // Ensure fullName is a string (not null)
+    fullName: z.string().optional().default(""),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 type RegisterFormValues = z.infer<typeof registerSchema>;
@@ -54,6 +58,11 @@ export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("login");
   const { user, loginMutation, registerMutation, signInWithGoogle } = useAuth();
   const [location] = useLocation();
+  
+  // Password visibility states
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   // Login form
   const loginForm = useForm<LoginFormValues>({
@@ -141,13 +150,32 @@ export default function AuthPage() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Password</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="password"
-                                placeholder="Enter your password"
-                                {...field}
-                              />
-                            </FormControl>
+                            <div className="relative">
+                              <FormControl>
+                                <Input
+                                  type={showLoginPassword ? "text" : "password"}
+                                  placeholder="Enter your password"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                onClick={() => setShowLoginPassword(!showLoginPassword)}
+                                tabIndex={-1}
+                              >
+                                {showLoginPassword ? (
+                                  <EyeOff className="h-4 w-4 text-gray-500" />
+                                ) : (
+                                  <Eye className="h-4 w-4 text-gray-500" />
+                                )}
+                                <span className="sr-only">
+                                  {showLoginPassword ? "Hide password" : "Show password"}
+                                </span>
+                              </Button>
+                            </div>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -236,6 +264,7 @@ export default function AuthPage() {
                               <Input
                                 placeholder="Enter your full name"
                                 {...field}
+                                value={field.value || ""}
                               />
                             </FormControl>
                             <FormMessage />
@@ -248,13 +277,32 @@ export default function AuthPage() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Password</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="password"
-                                placeholder="Choose a password"
-                                {...field}
-                              />
-                            </FormControl>
+                            <div className="relative">
+                              <FormControl>
+                                <Input
+                                  type={showRegisterPassword ? "text" : "password"}
+                                  placeholder="Choose a password"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                                tabIndex={-1}
+                              >
+                                {showRegisterPassword ? (
+                                  <EyeOff className="h-4 w-4 text-gray-500" />
+                                ) : (
+                                  <Eye className="h-4 w-4 text-gray-500" />
+                                )}
+                                <span className="sr-only">
+                                  {showRegisterPassword ? "Hide password" : "Show password"}
+                                </span>
+                              </Button>
+                            </div>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -265,13 +313,32 @@ export default function AuthPage() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Confirm Password</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="password"
-                                placeholder="Confirm your password"
-                                {...field}
-                              />
-                            </FormControl>
+                            <div className="relative">
+                              <FormControl>
+                                <Input
+                                  type={showConfirmPassword ? "text" : "password"}
+                                  placeholder="Confirm your password"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                tabIndex={-1}
+                              >
+                                {showConfirmPassword ? (
+                                  <EyeOff className="h-4 w-4 text-gray-500" />
+                                ) : (
+                                  <Eye className="h-4 w-4 text-gray-500" />
+                                )}
+                                <span className="sr-only">
+                                  {showConfirmPassword ? "Hide password" : "Show password"}
+                                </span>
+                              </Button>
+                            </div>
                             <FormMessage />
                           </FormItem>
                         )}

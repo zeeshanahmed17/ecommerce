@@ -1,81 +1,94 @@
 // Temporarily using a hybrid approach for Firebase
 // We're keeping the mock for now to avoid environment variable issues
 // but we're ensuring the data isn't "dummy" or "made up"
-import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { initializeApp, FirebaseApp } from "firebase/app";
+import { 
+  getAuth, 
+  GoogleAuthProvider,
+  Auth,
+  User
+} from "firebase/auth";
 
-// Set a flag to indicate we're using a managed auth implementation
+// Set to true to use the mock auth implementation instead of real Firebase
 const USE_MANAGED_AUTH = true;
 
-// Actual firebase config would be constructed like this:
-// const firebaseConfig = {
-//   apiKey: process.env.FIREBASE_API_KEY,
-//   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-//   projectId: process.env.FIREBASE_PROJECT_ID,
-//   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-//   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-//   appId: process.env.FIREBASE_APP_ID
-// };
+// Create mock implementation for development/testing
+let app: FirebaseApp;
+let auth: Auth;
+let googleProvider: GoogleAuthProvider;
 
-// For development use a temporary config
-const firebaseConfig = {
-  apiKey: "AIzaSyAe_LJxTxj-fMBkxP0wRl6wR5lvz3yTKDQ",
-  authDomain: "shopelite-dev.firebaseapp.com",
-  projectId: "shopelite-dev",
-  storageBucket: "shopelite-dev.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef1234567890abcdef"
-};
-
-// Initialize Firebase
-let app, auth, googleProvider;
-
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  googleProvider = new GoogleAuthProvider();
-  googleProvider.setCustomParameters({ prompt: 'select_account' });
-  console.log("Firebase initialized with real configuration");
-} catch (error) {
-  console.error("Error initializing Firebase:", error);
-  console.log("Falling back to managed auth implementation");
-  setupManagedAuth();
+// Mock user credential interface
+interface ManagedUserCredential {
+  user: {
+    uid: string;
+    email: string;
+    displayName: string | null;
+    photoURL: string | null;
+  };
 }
 
-// Managed auth implementation to ensure functionality
-function setupManagedAuth() {
-  class ManagedAuth {
-    currentUser = null;
+if (USE_MANAGED_AUTH) {
+  console.log("Using mock auth implementation for development");
+  setupManagedAuth();
+} else {
+  try {
+    // Replace these with your actual Firebase credentials
+    const firebaseConfig = {
+      apiKey: "AIzaSyBGSacVOI-_m-xmVzL6-_21NV-xfiflol0",
+      authDomain: "ecomm-pro-a0f46.firebaseapp.com",
+      projectId: "ecomm-pro-a0f46",
+      storageBucket: "ecomm-pro-a0f46.appspot.com",
+      messagingSenderId: "969391420289",
+      appId: "1:969391420289:web:1fc6bd5aaad19e45e81b90"
+    };
     
-    async signInWithPopup() {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    googleProvider = new GoogleAuthProvider();
+    googleProvider.setCustomParameters({ prompt: 'select_account' });
+    console.log("Firebase initialized with real configuration");
+  } catch (error) {
+    console.error("Error initializing Firebase:", error);
+    console.log("Falling back to mock auth implementation");
+    setupManagedAuth();
+  }
+}
+
+// Create mock objects for testing
+function setupManagedAuth() {
+  // Create a simple mock object with methods we need
+  const mockAuth = {
+    currentUser: null,
+    signInWithPopup: async (): Promise<ManagedUserCredential> => {
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Return mock user data
       return {
         user: {
-          uid: "managed-uid-001",
-          email: "admin@example.com", // This matches our database admin
-          displayName: "Admin User",
+          uid: "mock-uid-123456",
+          email: "mock-user@example.com",
+          displayName: "Mock User",
           photoURL: null
         }
       };
-    }
-    
-    async signOut() {
-      this.currentUser = null;
+    },
+    signOut: async (): Promise<void> => {
       return Promise.resolve();
-    }
-    
-    onAuthStateChanged(callback) {
+    },
+    onAuthStateChanged: (callback: (user: User | null) => void): (() => void) => {
       setTimeout(() => callback(null), 0);
       return () => {};
     }
-  }
+  };
 
-  class ManagedGoogleProvider {
-    setCustomParameters(params) {}
-  }
-
-  app = { name: "managed-app" };
-  auth = new ManagedAuth();
-  googleProvider = new ManagedGoogleProvider();
+  // Create minimal mock provider
+  const mockGoogleProvider = new GoogleAuthProvider();
+  
+  // Set our mock objects
+  app = { name: "mock-app" } as FirebaseApp;
+  auth = mockAuth as unknown as Auth;
+  googleProvider = mockGoogleProvider;
 }
 
 export { app, auth, googleProvider };

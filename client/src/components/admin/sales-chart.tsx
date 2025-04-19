@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -28,14 +28,36 @@ import {
 } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function SalesChart() {
-  const [period, setPeriod] = useState("monthly");
+interface SalesChartProps {
+  defaultPeriod?: string;
+}
+
+export default function SalesChart({ defaultPeriod = "monthly" }: SalesChartProps) {
+  const [period, setPeriod] = useState(defaultPeriod);
+  
+  // Update period when defaultPeriod changes
+  useEffect(() => {
+    setPeriod(defaultPeriod);
+  }, [defaultPeriod]);
+  
   const { data: revenueData, isLoading } = useQuery<{
     daily: { date: string; revenue: number }[];
-    weekly: { week: string; revenue: number }[];
+    weekly: { week: number; year: number; revenue: number }[];
     monthly: { month: string; revenue: number }[];
   }>({
-    queryKey: ["/api/analytics/revenue"],
+    queryKey: ["/api/analytics/revenue-stats", { period }],
+    queryFn: async ({ queryKey }) => {
+      const [endpoint, params] = queryKey as [string, { period?: string }];
+      const periodValue = params?.period || "monthly";
+      
+      // Fetch with period parameter
+      const response = await fetch(`${endpoint}?period=${periodValue}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch revenue data");
+      }
+      return response.json();
+    },
+    refetchInterval: 10000 // Refresh every 10 seconds
   });
 
   if (isLoading) {
@@ -69,9 +91,28 @@ export default function SalesChart() {
     );
   }
 
-  let chartData = revenueData.monthly || [];
+  let chartData: any[] = revenueData.monthly || [];
   if (period === "weekly") chartData = revenueData.weekly || [];
   if (period === "daily") chartData = revenueData.daily || [];
+  // For yearly view, aggregate monthly data
+  if (period === "yearly" && revenueData.monthly?.length) {
+    const yearlyData: Record<string, number> = {};
+    
+    revenueData.monthly.forEach(item => {
+      if (item.month) {
+        const year = item.month.split(' ')[1]; // Extract year from "Jan 2023" format
+        if (!yearlyData[year]) {
+          yearlyData[year] = 0;
+        }
+        yearlyData[year] += item.revenue;
+      }
+    });
+    
+    chartData = Object.entries(yearlyData).map(([year, revenue]) => ({
+      year,
+      revenue
+    })).sort((a, b) => Number(a.year) - Number(b.year));
+  }
 
   return (
     <Card className="mb-8">
@@ -83,15 +124,15 @@ export default function SalesChart() {
           </CardDescription>
         </div>
         <Tabs 
-          defaultValue="monthly" 
+          defaultValue={defaultPeriod}
           value={period} 
           onValueChange={setPeriod}
           className="w-[400px]"
         >
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="daily">Daily</TabsTrigger>
-            <TabsTrigger value="weekly">Weekly</TabsTrigger>
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
+            <TabsTrigger value="yearly">Yearly</TabsTrigger>
           </TabsList>
         </Tabs>
       </CardHeader>
@@ -132,7 +173,7 @@ export default function SalesChart() {
                 />
                 <Tooltip 
                   formatter={(value) => [`$${value.toLocaleString()}`, "Revenue"]} 
-                  labelFormatter={(label) => `${label}`}
+                  labelFormatter={(label) => `Week ${label}`}
                 />
                 <Line 
                   type="monotone" 
@@ -143,6 +184,25 @@ export default function SalesChart() {
                   activeDot={{ r: 6 }} 
                 />
               </LineChart>
+            ) : period === "yearly" ? (
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis 
+                  dataKey="year" 
+                  axisLine={false} 
+                  tickLine={false} 
+                />
+                <YAxis 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tickFormatter={(value) => `$${value.toLocaleString()}`} 
+                />
+                <Tooltip 
+                  formatter={(value) => [`$${value.toLocaleString()}`, "Revenue"]} 
+                  labelFormatter={(label) => `Year: ${label}`}
+                />
+                <Bar dataKey="revenue" fill="hsl(var(--chart-4))" radius={[4, 4, 0, 0]} />
+              </BarChart>
             ) : (
               <AreaChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />

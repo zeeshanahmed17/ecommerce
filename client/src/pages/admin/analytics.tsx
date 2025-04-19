@@ -35,6 +35,44 @@ import {
 } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2, AlertTriangle } from "lucide-react";
+import TopSellingProducts from "@/components/admin/top-selling-products";
+import PaymentMethods from "@/components/admin/payment-methods";
+import { getQueryFn } from "@/lib/queryClient";
+
+// Define types for the data
+interface RevenueItem {
+  revenue: number;
+  date?: string;
+  week?: number;
+  year?: number;
+  month?: string;
+}
+
+interface RevenueData {
+  daily: RevenueItem[];
+  weekly: RevenueItem[];
+  monthly: RevenueItem[];
+}
+
+interface CategoryData {
+  category: string;
+  count: number;
+}
+
+interface Order {
+  id: number;
+  total: number;
+  status: string;
+  createdAt: string;
+  // Add other fields as needed
+}
+
+interface Product {
+  id: number;
+  name: string;
+  inventory: number;
+  // Add other fields as needed
+}
 
 export default function AdminAnalytics() {
   const { user, isLoading: authLoading } = useAuth();
@@ -45,8 +83,9 @@ export default function AdminAnalytics() {
     data: revenueData, 
     isLoading: isRevenueLoading,
     isError: isRevenueError
-  } = useQuery({
-    queryKey: ["/api/analytics/revenue"],
+  } = useQuery<RevenueData>({
+    queryKey: ["/api/analytics/revenue-stats"],
+    queryFn: getQueryFn(),
   });
 
   // Fetch category distribution
@@ -54,8 +93,9 @@ export default function AdminAnalytics() {
     data: categoryData, 
     isLoading: isCategoryLoading,
     isError: isCategoryError
-  } = useQuery({
-    queryKey: ["/api/analytics/categories"],
+  } = useQuery<CategoryData[]>({
+    queryKey: ["/api/analytics/category-distribution"],
+    queryFn: getQueryFn(),
   });
 
   // Fetch recent orders for dashboard metrics
@@ -63,8 +103,9 @@ export default function AdminAnalytics() {
     data: recentOrders, 
     isLoading: isOrdersLoading,
     isError: isOrdersError
-  } = useQuery({
+  } = useQuery<Order[]>({
     queryKey: ["/api/analytics/recent-orders"],
+    queryFn: getQueryFn(),
   });
 
   // Fetch low stock products for inventory analysis
@@ -72,38 +113,39 @@ export default function AdminAnalytics() {
     data: lowStockProducts, 
     isLoading: isProductsLoading,
     isError: isProductsError
-  } = useQuery({
-    queryKey: ["/api/analytics/low-stock"],
+  } = useQuery<Product[]>({
+    queryKey: ["/api/analytics/low-stock-products"],
+    queryFn: getQueryFn(),
   });
 
   // Get chart data based on selected time period
-  const getChartData = () => {
+  const getChartData = (): RevenueItem[] => {
     if (!revenueData) return [];
     
     switch(timePeriod) {
-      case "daily": return revenueData.daily;
-      case "weekly": return revenueData.weekly;
-      case "monthly": return revenueData.monthly;
-      default: return revenueData.monthly;
+      case "daily": return revenueData.daily || [];
+      case "weekly": return revenueData.weekly || [];
+      case "monthly": return revenueData.monthly || [];
+      default: return revenueData.monthly || [];
     }
   };
 
   // Calculate total revenue
-  const calculateTotalRevenue = () => {
+  const calculateTotalRevenue = (): number => {
     const data = getChartData();
-    return data.reduce((total, item) => total + item.revenue, 0);
+    return data.reduce((total: number, item: RevenueItem) => total + item.revenue, 0);
   };
 
   // Calculate average order value
-  const calculateAverageOrderValue = () => {
+  const calculateAverageOrderValue = (): number => {
     if (!recentOrders || recentOrders.length === 0) return 0;
     
-    const totalValue = recentOrders.reduce((sum, order) => sum + order.total, 0);
+    const totalValue = recentOrders.reduce((sum: number, order: Order) => sum + order.total, 0);
     return totalValue / recentOrders.length;
   };
 
   // Calculate revenue growth
-  const calculateRevenueGrowth = () => {
+  const calculateRevenueGrowth = (): number => {
     const data = getChartData();
     if (data.length < 2) return 0;
     
@@ -174,7 +216,7 @@ export default function AdminAnalytics() {
                   <p className="text-red-500">Error loading data</p>
                 ) : (
                   <>
-                    <div className="text-2xl font-bold">{recentOrders ? recentOrders.length : 0}</div>
+                    <div className="text-2xl font-bold">{recentOrders?.length || 0}</div>
                     <p className="text-xs text-green-500 flex items-center">
                       <span>↑</span>
                       <span className="ml-1">12.3% from last month</span>
@@ -218,7 +260,7 @@ export default function AdminAnalytics() {
                   <p className="text-red-500">Error loading data</p>
                 ) : (
                   <>
-                    <div className="text-2xl font-bold">{lowStockProducts ? lowStockProducts.length : 0}</div>
+                    <div className="text-2xl font-bold">{lowStockProducts?.length || 0}</div>
                     <p className="text-xs text-yellow-500 flex items-center">
                       <span>⚠</span>
                       <span className="ml-1">Need attention</span>
@@ -381,7 +423,7 @@ export default function AdminAnalytics() {
                           dataKey="count"
                           nameKey="category"
                         >
-                          {categoryData.map((entry, index) => (
+                          {categoryData.map((entry: CategoryData, index: number) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                           ))}
                         </Pie>
@@ -397,57 +439,11 @@ export default function AdminAnalytics() {
               </CardContent>
             </Card>
 
+            {/* Top Selling Products */}
+            <TopSellingProducts />
+
             {/* Payment Methods Distribution */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Payment Methods</CardTitle>
-                <CardDescription>Distribution of orders by payment method</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {isOrdersLoading ? (
-                  <Skeleton className="h-[300px] w-full" />
-                ) : isOrdersError ? (
-                  <div className="h-[300px] flex items-center justify-center">
-                    <div className="text-center">
-                      <AlertTriangle className="h-10 w-10 text-yellow-500 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900">Failed to load payment data</h3>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        layout="vertical"
-                        data={[
-                          { name: 'Credit Card', value: 65 },
-                          { name: 'UPI', value: 25 },
-                          { name: 'Digital Wallet', value: 10 }
-                        ]}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                        <XAxis type="number" axisLine={false} tickLine={false} />
-                        <YAxis 
-                          dataKey="name" 
-                          type="category" 
-                          axisLine={false} 
-                          tickLine={false} 
-                        />
-                        <Tooltip 
-                          formatter={(value) => [`${value}%`, "Percentage"]}
-                        />
-                        <Bar 
-                          dataKey="value" 
-                          fill="hsl(var(--chart-4))" 
-                          radius={[0, 4, 4, 0]} 
-                          barSize={30}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <PaymentMethods />
 
             {/* Customer Acquisition */}
             <Card>

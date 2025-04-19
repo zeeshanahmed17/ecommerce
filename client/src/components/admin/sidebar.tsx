@@ -24,6 +24,7 @@ export default function AdminSidebar() {
     { name: "Inventory", icon: Package, path: "/admin/inventory" },
     { name: "Orders", icon: ShoppingBag, path: "/admin/orders" },
     { name: "Analytics", icon: ChartBar, path: "/admin/analytics" },
+    { name: "Users", icon: Users, path: "/admin/users" },
   ];
 
   return (

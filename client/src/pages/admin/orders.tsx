@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { Redirect } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { apiRequest, queryClient } from "@/lib/queryClient";
+import { apiRequest, queryClient, enableRealTimeUpdates, disableRealTimeUpdates } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Order } from "@shared/schema";
 import AdminSidebar from "@/components/admin/sidebar";
 import {
   Card,
@@ -48,8 +47,43 @@ import {
   Calendar,
   DollarSign,
   CreditCard,
-  Truck
+  Truck,
+  RefreshCcw,
+  Check,
+  Bell
 } from "lucide-react";
+
+// Define order details type
+interface OrderItem {
+  id: number;
+  orderId: number;
+  productId: number;
+  quantity: number;
+  price: number;
+  product?: {
+    id: number;
+    name: string;
+    imageUrl: string;
+    sku: string;
+    category: string;
+  } | null;
+}
+
+interface Order {
+  id: number;
+  userId: number;
+  status: string;
+  total: number;
+  paymentMethod: string;
+  paymentStatus: string;
+  shippingAddress: string;
+  createdAt: Date | string;
+  items?: OrderItem[];
+}
+
+interface OrderDetails extends Order {
+  items: OrderItem[];
+}
 
 export default function AdminOrders() {
   const { user, isLoading: authLoading } = useAuth();
@@ -57,12 +91,15 @@ export default function AdminOrders() {
   
   // UI state
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [sortField, setSortField] = useState<"id" | "createdAt" | "total">("createdAt");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [currentOrderId, setCurrentOrderId] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [refreshing, setRefreshing] = useState(false);
+  const [prevOrderCount, setPrevOrderCount] = useState(0);
+  const [newOrderIds, setNewOrderIds] = useState<number[]>([]);
   const itemsPerPage = 10;
 
   // Fetch orders
@@ -70,16 +107,81 @@ export default function AdminOrders() {
     data: orders, 
     isLoading: isOrdersLoading,
     isError,
-    refetch
+    refetch,
+    dataUpdatedAt
   } = useQuery<Order[]>({
     queryKey: ["/api/orders"],
+    refetchInterval: 10000, // Refresh every 10 seconds
   });
+
+  // Enable real-time updates when the component mounts
+  useEffect(() => {
+    enableRealTimeUpdates();
+    
+    // Listen for new order events
+    const handleNewOrder = (event: Event) => {
+      if (event instanceof MessageEvent) {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === 'order-created') {
+            // Show notification
+            toast({
+              title: "New Order Received!",
+              description: `Order #${data.order.id} for $${data.order.total.toFixed(2)}`,
+            });
+            
+            // Add to new order IDs list
+            setNewOrderIds(prev => [data.order.id, ...prev]);
+            
+            // Set refreshing state
+            setRefreshing(true);
+            
+            // Fetch latest orders
+            refetch();
+            
+            // Clear refreshing state and new order IDs after 10 seconds
+            setTimeout(() => {
+              setRefreshing(false);
+              setNewOrderIds([]);
+            }, 10000);
+          }
+        } catch (e) {
+          console.error("Error processing SSE event", e);
+        }
+      }
+    };
+
+    // Setup event listener
+    const eventSource = new EventSource('/api/events');
+    eventSource.addEventListener('message', handleNewOrder);
+    
+    return () => {
+      eventSource.removeEventListener('message', handleNewOrder);
+      eventSource.close();
+      disableRealTimeUpdates();
+    };
+  }, [toast, refetch]);
+
+  // Display refresh animation when orders update
+  useEffect(() => {
+    if (orders && orders.length !== prevOrderCount && prevOrderCount !== 0) {
+      setRefreshing(true);
+      const timer = setTimeout(() => {
+        setRefreshing(false);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+    
+    if (orders) {
+      setPrevOrderCount(orders.length);
+    }
+  }, [orders, dataUpdatedAt, prevOrderCount]);
 
   // Fetch order details with items
   const { 
     data: orderDetails, 
     isLoading: isOrderDetailsLoading 
-  } = useQuery({
+  } = useQuery<OrderDetails>({
     queryKey: [`/api/orders/${currentOrderId}`],
     enabled: !!currentOrderId && isViewDialogOpen,
   });
@@ -121,7 +223,7 @@ export default function AdminOrders() {
       order.userId.toString().includes(searchQuery);
     
     // Apply status filter
-    const matchesStatus = !statusFilter || order.status === statusFilter;
+    const matchesStatus = statusFilter === "all" || order.status === statusFilter;
     
     return matchesSearch && matchesStatus;
   }) || [];
@@ -210,8 +312,8 @@ export default function AdminOrders() {
   };
 
   // Format date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDate = (dateString: string | Date) => {
+    const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
     return new Intl.DateTimeFormat('en-US', { 
       year: 'numeric', 
       month: 'short', 
@@ -233,12 +335,34 @@ export default function AdminOrders() {
       {/* Main content */}
       <div className="flex-1 overflow-auto">
         <div className="p-6">
-          <div className="mb-6">
-            <h1 className="text-2xl font-semibold text-gray-900">Order Management</h1>
-            <p className="text-gray-600">View and manage customer orders, update statuses, and process payments.</p>
+          <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-semibold text-gray-900 flex items-center">
+                Order Management
+                {refreshing && (
+                  <RefreshCcw className="ml-2 h-5 w-5 animate-spin text-blue-500" />
+                )}
+                {newOrderIds.length > 0 && (
+                  <Badge variant="destructive" className="ml-2 animate-pulse flex items-center">
+                    <Bell className="h-3 w-3 mr-1" />
+                    {newOrderIds.length} new
+                  </Badge>
+                )}
+              </h1>
+              <p className="text-gray-600">View and manage customer orders</p>
+            </div>
+            <Badge variant="secondary" className="py-1.5">
+              <span className="flex items-center">
+                <span className="relative flex h-2 w-2 mr-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                Real-time updates active
+              </span>
+            </Badge>
           </div>
 
-          <Card className="mb-6">
+          <Card className={`mb-6 ${refreshing ? "border-green-300 shadow-green-100 transition-all duration-300" : ""}`}>
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <form onSubmit={handleSearch} className="relative flex w-full md:w-1/3">
@@ -249,28 +373,36 @@ export default function AdminOrders() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pr-10"
                   />
-                  <Button type="submit" variant="ghost" size="sm" className="absolute right-0 top-0 h-full">
+                  <Button type="submit" size="icon" variant="ghost" className="absolute right-0 top-0 h-full">
                     <Search className="h-4 w-4" />
                   </Button>
                 </form>
-                
-                <div className="flex items-center space-x-4 w-full md:w-auto">
-                  <Select
-                    value={statusFilter}
-                    onValueChange={setStatusFilter}
+
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center">
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                      <SelectTrigger className="w-40">
+                        <SelectValue placeholder="Filter by status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="processing">Processing</SelectItem>
+                        <SelectItem value="shipped">Shipped</SelectItem>
+                        <SelectItem value="delivered">Delivered</SelectItem>
+                        <SelectItem value="cancelled">Cancelled</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    onClick={() => refetch()}
+                    className={refreshing ? "text-green-500" : ""}
                   >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="All Statuses" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Statuses</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="processing">Processing</SelectItem>
-                      <SelectItem value="shipped">Shipped</SelectItem>
-                      <SelectItem value="delivered">Delivered</SelectItem>
-                      <SelectItem value="cancelled">Cancelled</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <RefreshCcw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
+                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -333,10 +465,35 @@ export default function AdminOrders() {
                         </TableRow>
                       ) : (
                         paginatedOrders.map((order) => (
-                          <TableRow key={order.id}>
-                            <TableCell className="font-medium">#{order.id.toString().padStart(4, '0')}</TableCell>
+                          <TableRow 
+                            key={order.id}
+                            className={newOrderIds.includes(order.id) ? "bg-blue-50 animate-pulse" : ""}
+                          >
+                            <TableCell className="font-medium">
+                              #{order.id.toString().padStart(4, '0')}
+                              {newOrderIds.includes(order.id) && (
+                                <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800 border-none">New</Badge>
+                              )}
+                            </TableCell>
                             <TableCell className="whitespace-nowrap">{formatDate(order.createdAt)}</TableCell>
-                            <TableCell>Customer #{order.userId}</TableCell>
+                            <TableCell>
+                              {order.items && order.items.length > 0 ? (
+                                <div className="flex items-center">
+                                  {order.items[0].product ? (
+                                    <>
+                                      <span className="truncate max-w-[150px]">{order.items[0].product.name}</span>
+                                      {order.items.length > 1 && (
+                                        <Badge variant="outline" className="ml-2 text-xs">+{order.items.length - 1} more</Badge>
+                                      )}
+                                    </>
+                                  ) : (
+                                    `Product #${order.items[0].productId}`
+                                  )}
+                                </div>
+                              ) : (
+                                "Customer #" + order.userId
+                              )}
+                            </TableCell>
                             <TableCell>${order.total.toFixed(2)}</TableCell>
                             <TableCell>{getStatusBadge(order.status)}</TableCell>
                             <TableCell>{getPaymentStatusBadge(order.paymentStatus)}</TableCell>
@@ -497,7 +654,7 @@ export default function AdminOrders() {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Product ID</TableHead>
+                            <TableHead>Product</TableHead>
                             <TableHead>Quantity</TableHead>
                             <TableHead>Price</TableHead>
                             <TableHead className="text-right">Subtotal</TableHead>
@@ -506,7 +663,30 @@ export default function AdminOrders() {
                         <TableBody>
                           {orderDetails.items?.map((item) => (
                             <TableRow key={item.id}>
-                              <TableCell>{item.productId}</TableCell>
+                              <TableCell>
+                                <div className="flex items-center">
+                                  {item.product ? (
+                                    <>
+                                      <div className="h-8 w-8 mr-2 rounded overflow-hidden">
+                                        <img 
+                                          src={item.product.imageUrl} 
+                                          alt={item.product.name}
+                                          className="h-full w-full object-cover"
+                                          onError={(e) => {
+                                            (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=No+Image';
+                                          }}
+                                        />
+                                      </div>
+                                      <div className="flex flex-col">
+                                        <span className="font-medium text-sm">{item.product.name}</span>
+                                        <span className="text-xs text-gray-500">SKU: {item.product.sku}</span>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <span>Product #{item.productId}</span>
+                                  )}
+                                </div>
+                              </TableCell>
                               <TableCell>{item.quantity}</TableCell>
                               <TableCell>${item.price.toFixed(2)}</TableCell>
                               <TableCell className="text-right">${(item.price * item.quantity).toFixed(2)}</TableCell>
