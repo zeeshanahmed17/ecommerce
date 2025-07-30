@@ -8,6 +8,8 @@ import { insertProductSchema, insertOrderSchema, insertOrderItemSchema } from "@
 import path from "path";
 import fs from "fs";
 import { EventEmitter } from "events";
+import { hashPassword, comparePasswords } from "./auth";
+import crypto from "crypto";
 
 // Create global event emitter for real-time updates
 export const dataEvents = new EventEmitter();
@@ -646,8 +648,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Generate a unique username with random suffix
           const baseUsername = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
           const username = baseUsername + '_' + Math.floor(Math.random() * 10000);
-          const crypto = await import('crypto');
-          
           // Generate a secure random password since Google users won't need it
           const password = crypto.randomBytes(24).toString('hex');
           
@@ -727,7 +727,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Hash the password
-      const { hashPassword } = require('./auth');
       const hashedPassword = await hashPassword(userData.password);
       
       // Create the user
@@ -778,7 +777,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Verify current password
-      const { comparePasswords } = require('./auth');
       const passwordMatch = await comparePasswords(currentPassword, user.password);
       
       if (!passwordMatch) {
@@ -786,7 +784,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Hash the new password
-      const { hashPassword } = require('./auth');
       const hashedPassword = await hashPassword(newPassword);
       
       // Update the password

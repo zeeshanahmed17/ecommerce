@@ -1,0 +1,52 @@
+[vite] connecting...
+[vite] connected.
+Firebase config: 
+Object {hasApiKey: true, hasProjectId: true, hasAppId: true, authDomain: "websiteecommerce-9ab6d.firebaseapp.com", cleanedValues: {…}}
+Firebase initialized with real configuration
+Starting Google sign-in process
+Firebase user exists but no session, attempting to restore session
+Google sign-in completed successfully
+Sending user data to backend for authentication
+Backend auth failed: 
+Error {}
+
+at t.value (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+Failed to restore session: 
+SyntaxError {}
+message: "Unexpected token '<', "<!DOCTYPE "... is not valid JSON"
+stack: "SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON"
+get stack: ƒ ()
+length: 0
+name: ""
+[[Prototype]]: ƒ ()
+set stack: ƒ ()
+[[Prototype]]: Object
+
+Failed to restore session: 
+SyntaxError {}
+
+Starting Google sign-in process
+Google sign-in error: 
+_FirebaseError {code: "auth/cancelled-popup-request", customData: {…}, name: "FirebaseError"}
+
+Error details: 
+Object {code: "auth/cancelled-popup-request", message: "Firebase: Error (auth/cancelled-popup-request).", stack: "FirebaseError: Firebase: Error (auth/cancelled-popup-request).↵    at createErrorInternal…"}
+code: "auth/cancelled-popup-request"
+message: "Firebase: Error (auth/cancelled-popup-request)."
+stack: "FirebaseError: Firebase: Error (auth/cancelled-popup-request).↵ at createErrorInternal (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/firebase_auth.js?v=8e502430:694:37)↵ at _createError (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/firebase_auth.js?v=8e502430:662:10)↵ at _PopupOperation.cancel (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/firebase_auth.js?v=8e502430:7041:17)↵ at new _PopupOperation (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/firebase_auth.js?v=8e502430:6997:42)↵ at signInWithPopup (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/firebase_auth.js?v=8e502430:6966:18)↵ at signInWithGoogle (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/src/hooks/use-auth.tsx:162:28)↵ at onClick (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/src/pages/auth-page.tsx:369:34)↵ at HTMLUnknownElement.callCallback2 (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e502430:3674:22)↵ at Object.invokeGuardedCallbackDev (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e502430:3699:24)↵ at invokeGuardedCallback (https://3ff0b46e-a705-4e18-aaf5-e92e27a29ea2-00-uwwm9hmm7fqw.spock.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-RPCDYKBN.js?v=8e502430:3733:39)"
+[[Prototype]]: Object
+
+Firebase user exists but no session, attempting to restore session
+Google sign-in completed successfully
+Sending user data to backend for authentication
+Backend auth failed: 
+Error {}
+
+Failed to restore session: 
+SyntaxError {}
+
+Failed to restore session: 
+SyntaxError {}
