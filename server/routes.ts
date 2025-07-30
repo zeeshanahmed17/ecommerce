@@ -646,7 +646,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Generate a unique username with random suffix
           const baseUsername = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
           const username = baseUsername + '_' + Math.floor(Math.random() * 10000);
-          const crypto = require('crypto');
+          const crypto = await import('crypto');
           
           // Generate a secure random password since Google users won't need it
           const password = crypto.randomBytes(24).toString('hex');
