@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 
 // Set to true to use the mock auth implementation instead of real Firebase
-const USE_MANAGED_AUTH = true;
+const USE_MANAGED_AUTH = false;
 
 // Create mock implementation for development/testing
 let app: FirebaseApp;
@@ -32,14 +32,14 @@ if (USE_MANAGED_AUTH) {
   setupManagedAuth();
 } else {
   try {
-    // Replace these with your actual Firebase credentials
+    // Use actual Firebase credentials from environment variables
     const firebaseConfig = {
-      apiKey: "AIzaSyBGSacVOI-_m-xmVzL6-_21NV-xfiflol0",
-      authDomain: "ecomm-pro-a0f46.firebaseapp.com",
-      projectId: "ecomm-pro-a0f46",
-      storageBucket: "ecomm-pro-a0f46.appspot.com",
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebaseapp.com`,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      storageBucket: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebasestorage.app`,
       messagingSenderId: "969391420289",
-      appId: "1:969391420289:web:1fc6bd5aaad19e45e81b90"
+      appId: import.meta.env.VITE_FIREBASE_APP_ID
     };
     
     app = initializeApp(firebaseConfig);
