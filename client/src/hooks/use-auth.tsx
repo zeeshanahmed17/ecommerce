@@ -245,6 +245,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     } catch (error: any) {
       console.error("Google sign-in error:", error);
+      console.error("Error details:", {
+        code: error.code,
+        message: error.message,
+        stack: error.stack
+      });
       
       // Check for FirebaseError which might have a specific code
       const errorCode = error.code ? error.code : 'unknown';

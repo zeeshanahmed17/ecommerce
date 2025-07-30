@@ -42,6 +42,18 @@ if (USE_MANAGED_AUTH) {
       appId: import.meta.env.VITE_FIREBASE_APP_ID
     };
     
+    // Debug logging to check configuration
+    console.log("Firebase config:", {
+      hasApiKey: !!import.meta.env.VITE_FIREBASE_API_KEY,
+      hasProjectId: !!import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      hasAppId: !!import.meta.env.VITE_FIREBASE_APP_ID,
+      authDomain: firebaseConfig.authDomain
+    });
+    
+    if (!import.meta.env.VITE_FIREBASE_API_KEY || !import.meta.env.VITE_FIREBASE_PROJECT_ID || !import.meta.env.VITE_FIREBASE_APP_ID) {
+      throw new Error("Missing Firebase environment variables");
+    }
+    
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     googleProvider = new GoogleAuthProvider();
