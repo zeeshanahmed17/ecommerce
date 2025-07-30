@@ -1,7 +1,7 @@
 // Temporarily using a hybrid approach for Firebase
 // We're keeping the mock for now to avoid environment variable issues
 // but we're ensuring the data isn't "dummy" or "made up"
-import { initializeApp, FirebaseApp } from "firebase/app";
+import { initializeApp, FirebaseApp, getApps } from "firebase/app";
 import { 
   getAuth, 
   GoogleAuthProvider,
@@ -33,28 +33,39 @@ if (USE_MANAGED_AUTH) {
 } else {
   try {
     // Use actual Firebase credentials from environment variables
+    // Clean up any extra quotes or spaces that might be in the environment variables
+    const cleanProjectId = (import.meta.env.VITE_FIREBASE_PROJECT_ID || '').replace(/["\s]/g, '');
+    const cleanApiKey = (import.meta.env.VITE_FIREBASE_API_KEY || '').replace(/["\s]/g, '');
+    const cleanAppId = (import.meta.env.VITE_FIREBASE_APP_ID || '').replace(/["\s]/g, '');
+    
     const firebaseConfig = {
-      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-      authDomain: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebaseapp.com`,
-      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-      storageBucket: `${import.meta.env.VITE_FIREBASE_PROJECT_ID}.firebasestorage.app`,
+      apiKey: cleanApiKey,
+      authDomain: `${cleanProjectId}.firebaseapp.com`,
+      projectId: cleanProjectId,
+      storageBucket: `${cleanProjectId}.firebasestorage.app`,
       messagingSenderId: "969391420289",
-      appId: import.meta.env.VITE_FIREBASE_APP_ID
+      appId: cleanAppId
     };
     
     // Debug logging to check configuration
     console.log("Firebase config:", {
-      hasApiKey: !!import.meta.env.VITE_FIREBASE_API_KEY,
-      hasProjectId: !!import.meta.env.VITE_FIREBASE_PROJECT_ID,
-      hasAppId: !!import.meta.env.VITE_FIREBASE_APP_ID,
-      authDomain: firebaseConfig.authDomain
+      hasApiKey: !!cleanApiKey,
+      hasProjectId: !!cleanProjectId,
+      hasAppId: !!cleanAppId,
+      authDomain: firebaseConfig.authDomain,
+      cleanedValues: {
+        projectId: cleanProjectId,
+        apiKeyLength: cleanApiKey.length,
+        appIdLength: cleanAppId.length
+      }
     });
     
-    if (!import.meta.env.VITE_FIREBASE_API_KEY || !import.meta.env.VITE_FIREBASE_PROJECT_ID || !import.meta.env.VITE_FIREBASE_APP_ID) {
+    if (!cleanApiKey || !cleanProjectId || !cleanAppId) {
       throw new Error("Missing Firebase environment variables");
     }
     
-    app = initializeApp(firebaseConfig);
+    // Check if Firebase app is already initialized to avoid duplicate app error
+    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
     auth = getAuth(app);
     googleProvider = new GoogleAuthProvider();
     googleProvider.setCustomParameters({ prompt: 'select_account' });
