@@ -205,7 +205,7 @@ if (!fs.existsSync(dbFilePath)) {
 
 // Initialize the SQLite connection
 const sqlite = new BetterSqlite3(dbFilePath);
-export const dbSQLite = drizzle(sqlite, { schema: schemaSQLite });
+export const dbSQLite = drizzleSQLite(sqlite, { schema: schemaSQLite });
 
 // Log SQLite queries in development
 if (process.env.NODE_ENV === 'development') {
