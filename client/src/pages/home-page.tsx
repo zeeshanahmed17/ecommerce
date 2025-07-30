@@ -33,31 +33,99 @@ export default function HomePage() {
       {/* Hero Section */}
       <div className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center py-12 md:py-16">
-            <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
-              <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">
-                Discover Unique Products For Your Lifestyle
+          <div className="flex flex-col md:flex-row items-center py-8 sm:py-12 md:py-16 lg:py-20 relative overflow-hidden">
+            {/* Background decoration - responsive */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/30 rounded-xl sm:rounded-2xl md:rounded-3xl"></div>
+            <div className="absolute top-4 right-4 sm:top-8 sm:right-8 md:top-10 md:right-10 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 bg-gradient-to-br from-blue-200/30 to-purple-200/30 rounded-full blur-lg md:blur-xl"></div>
+            <div className="absolute bottom-8 left-4 sm:bottom-12 sm:left-6 md:bottom-20 md:left-10 w-12 h-12 sm:w-18 sm:h-18 md:w-24 md:h-24 bg-gradient-to-br from-pink-200/30 to-yellow-200/30 rounded-full blur-md md:blur-lg"></div>
+            
+            <div className="w-full md:w-1/2 mb-12 md:mb-0 md:pr-8 lg:pr-12 relative z-10">
+              <div className="inline-flex items-center px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg">
+                <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                New Arrivals Available
+              </div>
+              
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 tracking-tight leading-tight">
+                Discover 
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Unique</span>
+                <br />Products For Your 
+                <span className="relative">
+                  Lifestyle
+                  <svg className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-2 sm:h-3 text-yellow-300" viewBox="0 0 200 12" fill="currentColor">
+                    <path d="M0,6 Q50,0 100,6 T200,6 L200,12 Q150,8 100,12 T0,12 Z" />
+                  </svg>
+                </span>
               </h1>
-              <p className="mt-4 text-xl text-gray-500">
-                Shop the latest trends with confidence and enjoy our premium shopping experience.
+              
+              <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                Shop the latest trends with confidence and enjoy our premium shopping experience. 
+                <span className="font-semibold text-gray-900">Free shipping on orders over $50.</span>
               </p>
-              <div className="mt-8 flex space-x-4">
-                <Link href="/shop">
-                  <Button className="px-5 py-3 bg-primary hover:bg-indigo-700">
+              
+              <div className="mt-6 sm:mt-8 md:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <Link href="/shop" className="w-full sm:w-auto">
+                  <Button className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 text-base sm:text-lg">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
                     Shop Now
                   </Button>
                 </Link>
-                <Button variant="outline" className="px-5 py-3">
+                <Button variant="outline" className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 font-semibold rounded-xl transition-all duration-200 text-base sm:text-lg">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
                   Explore Categories
                 </Button>
               </div>
+              
+              {/* Trust indicators */}
+              <div className="mt-8 sm:mt-10 md:mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 lg:gap-8 text-xs sm:text-sm text-gray-500">
+                <div className="flex items-center">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Free Shipping
+                </div>
+                <div className="flex items-center">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  30-Day Returns
+                </div>
+                <div className="flex items-center">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Secure Checkout
+                </div>
+              </div>
             </div>
-            <div className="md:w-1/2">
-              <img
-                src="https://images.unsplash.com/photo-1511556820780-d912e42b4980?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                alt="Premium shopping experience"
-                className="w-full h-auto rounded-lg shadow-xl"
-              />
+            
+            <div className="w-full md:w-1/2 relative z-10 mt-8 md:mt-0">
+              <div className="relative mx-auto max-w-lg md:max-w-none">
+                {/* Background glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-xl sm:rounded-2xl blur-xl sm:blur-2xl transform scale-105 sm:scale-110"></div>
+                
+                <div className="relative bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-1 sm:p-2 shadow-xl sm:shadow-2xl">
+                  <img
+                    src="https://images.unsplash.com/photo-1511556820780-d912e42b4980?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                    alt="Premium shopping experience"
+                    className="w-full h-auto rounded-lg sm:rounded-xl shadow-lg"
+                  />
+                  
+                  {/* Floating badges - responsive positioning */}
+                  <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 md:-top-6 md:-right-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 rounded-full font-bold text-xs sm:text-sm shadow-lg transform rotate-6 sm:rotate-12 animate-pulse">
+                    50% OFF
+                  </div>
+                  
+                  <div className="absolute -bottom-2 -left-2 sm:-bottom-3 sm:-left-3 md:-bottom-4 md:-left-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 rounded-full font-semibold text-xs sm:text-sm shadow-lg">
+                    ⭐ 4.9/5 Rating
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
