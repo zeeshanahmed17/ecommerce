@@ -6,7 +6,7 @@
       "price": 149.99,
       "imageUrl": "https://images.unsplash.com/photo-1560343090-f0409e92791a?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=500&q=80",
       "category": "Electronics",
-      "inventory": 22,
+      "inventory": 0,
       "sku": "HP-100-BK",
       "featured": true,
       "id": 1,

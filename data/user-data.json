@@ -18,7 +18,16 @@
       "id": 2,
       "createdAt": "2025-04-19T11:54:12.149Z",
       "isAdmin": false
+    },
+    {
+      "username": "zeeshanahmed5003_9057",
+      "email": "zeeshanahmed5003@gmail.com",
+      "fullName": "Zeeshan Ahmed",
+      "password": "6a53e91bba45c7139d453484cf5246661a2d2f762861b1c86bae9cd5c90de448ca0e84c9abedecca9f45dc1a645a0a8fbdd68e32bf8643de3e18d59b9120287e.65bbae5aa77ec475d7f7a31ecd4436b7",
+      "isAdmin": false,
+      "id": 3,
+      "createdAt": "2025-07-30T15:13:55.443Z"
     }
   ],
-  "nextUserId": 3
+  "nextUserId": 4
 }
