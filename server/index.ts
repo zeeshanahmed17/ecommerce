@@ -72,7 +72,7 @@ async function startServer() {
     }
 
     // Get port from environment variable with fallback
-    const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 5000;
     
     // Start the server with error handling for port conflicts
     server.listen(port, () => {
