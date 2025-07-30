@@ -138,30 +138,30 @@ export default function HomePage() {
       </div>
 
       {/* Featured Products */}
-      <div id="featured" className="bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="featured" className="bg-gray-50 py-8 xs:py-10 sm:py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight">
               Featured Products
             </h2>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+            <p className="mt-3 xs:mt-4 max-w-2xl text-base xs:text-lg sm:text-xl text-gray-500 mx-auto leading-relaxed">
               Check out our most popular items this season.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 xs:mt-10 sm:mt-12 grid gap-4 xs:gap-5 sm:gap-6 grid-cols-1 xs:grid-cols-2 lg:grid-cols-4">
             {isProductsLoading ? (
-              // Loading skeletons
+              // Loading skeletons - enhanced responsive
               Array(4)
                 .fill(0)
                 .map((_, i) => (
-                  <div key={i} className="bg-white rounded-lg shadow-sm p-4">
-                    <Skeleton className="h-64 w-full mb-4" />
-                    <Skeleton className="h-6 w-3/4 mb-2" />
-                    <Skeleton className="h-4 w-full mb-4" />
-                    <div className="flex justify-between">
-                      <Skeleton className="h-6 w-1/4" />
-                      <Skeleton className="h-8 w-8 rounded-full" />
+                  <div key={i} className="bg-white rounded-lg xs:rounded-xl shadow-sm p-3 xs:p-4 sm:p-5">
+                    <Skeleton className="h-48 xs:h-56 sm:h-64 w-full mb-3 xs:mb-4 rounded-md xs:rounded-lg" />
+                    <Skeleton className="h-5 xs:h-6 w-3/4 mb-2" />
+                    <Skeleton className="h-3 xs:h-4 w-full mb-3 xs:mb-4" />
+                    <div className="flex justify-between items-center">
+                      <Skeleton className="h-5 xs:h-6 w-1/4" />
+                      <Skeleton className="h-7 xs:h-8 w-7 xs:w-8 rounded-full" />
                     </div>
                   </div>
                 ))
@@ -170,15 +170,15 @@ export default function HomePage() {
                 <ProductCard key={product.id} product={product} />
               ))
             ) : (
-              <div className="col-span-4 text-center py-12">
-                <p className="text-gray-500">No featured products available.</p>
+              <div className="col-span-1 xs:col-span-2 lg:col-span-4 text-center py-8 xs:py-10 sm:py-12">
+                <p className="text-gray-500 text-sm xs:text-base">No featured products available.</p>
               </div>
             )}
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-8 xs:mt-10 sm:mt-12 text-center">
             <Link href="/shop">
-              <Button className="px-6 py-3">
+              <Button className="px-4 xs:px-6 py-2.5 xs:py-3 text-sm xs:text-base font-semibold rounded-lg xs:rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200">
                 View All Products
               </Button>
             </Link>
@@ -187,18 +187,18 @@ export default function HomePage() {
       </div>
 
       {/* Categories */}
-      <div id="categories" className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="categories" className="bg-white py-8 xs:py-10 sm:py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight">
               Shop by Category
             </h2>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+            <p className="mt-3 xs:mt-4 max-w-2xl text-base xs:text-lg sm:text-xl text-gray-500 mx-auto leading-relaxed">
               Browse our wide selection of products by category.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 xs:mt-10 sm:mt-12 grid gap-4 xs:gap-5 sm:gap-6 grid-cols-1 xs:grid-cols-2 lg:grid-cols-3">
             {Object.entries(categoryImages).map(([category, imageUrl]) => (
               <CategoryCard
                 key={category}
@@ -212,62 +212,65 @@ export default function HomePage() {
       </div>
 
       {/* Special Offers */}
-      <div className="bg-gradient-to-r from-indigo-900 to-purple-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:flex lg:items-center lg:justify-between">
-            <div className="lg:w-1/2">
+      <div className="bg-gradient-to-r from-indigo-900 to-purple-900 text-white py-10 xs:py-12 sm:py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 xs:gap-10 sm:gap-12">
+            <div className="w-full lg:w-1/2">
               <div className="relative">
-                <div className="absolute -top-6 -left-6">
-                  <div className="bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full transform -rotate-12">
+                <div className="absolute -top-3 -left-3 xs:-top-4 xs:-left-4 sm:-top-6 sm:-left-6">
+                  <div className="bg-yellow-400 text-black text-xs xs:text-sm font-bold px-2 xs:px-3 py-1 rounded-full transform -rotate-6 xs:-rotate-12 shadow-lg">
                     LIMITED TIME
                   </div>
                 </div>
-                <h2 className="text-3xl font-extrabold tracking-tight sm:text-5xl leading-tight">
-                  Summer Collection <br />
+                <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                  Summer Collection <br className="hidden xs:block" />
                   <span className="text-yellow-400">Flash Sale</span>
                 </h2>
               </div>
-              <p className="mt-4 text-xl text-indigo-100">
+              <p className="mt-3 xs:mt-4 text-base xs:text-lg sm:text-xl text-indigo-100 leading-relaxed">
                 Exclusive savings on our premium products. 
+                <span className="block xs:inline"> </span>
                 Up to 50% off on selected items until supplies last!
               </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Link href="/shop?discount=true">
-                  <Button variant="default" className="bg-white text-indigo-900 hover:bg-gray-100 font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              <div className="mt-6 xs:mt-8 flex flex-col xs:flex-row gap-3 xs:gap-4">
+                <Link href="/shop?discount=true" className="w-full xs:w-auto">
+                  <Button variant="default" className="w-full xs:w-auto bg-white text-indigo-900 hover:bg-gray-100 font-bold px-4 xs:px-6 py-2.5 xs:py-3 text-sm xs:text-base rounded-lg xs:rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                     Shop Now
                   </Button>
                 </Link>
-                <Link href="/about/sale">
-                  <Button variant="outline" className="border-2 border-white text-white hover:bg-white/10 font-medium">
-                    View Details
+                <Link href="/about/sale" className="w-full xs:w-auto">
+                  <Button variant="outline" className="w-full xs:w-auto border-2 border-white text-white hover:bg-white/10 font-medium px-4 xs:px-6 py-2.5 xs:py-3 text-sm xs:text-base rounded-lg xs:rounded-xl transition-all duration-200">
+                    <span className="hidden xs:inline">View Details</span>
+                    <span className="xs:hidden">Details</span>
                   </Button>
                 </Link>
               </div>
             </div>
-            <div className="mt-12 lg:mt-0 lg:w-1/2">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-6 py-8 lg:p-10 border border-white/20 shadow-xl">
+            <div className="w-full lg:w-1/2 mt-6 xs:mt-8 sm:mt-10 lg:mt-0">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg xs:rounded-xl px-4 xs:px-6 py-6 xs:py-8 lg:p-10 border border-white/20 shadow-xl">
                 <div className="text-center">
-                  <div className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 p-1 rounded-full mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-black w-8 h-8 p-1">
+                  <div className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 p-0.5 xs:p-1 rounded-full mb-3 xs:mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-black w-6 h-6 xs:w-8 xs:h-8 p-0.5 xs:p-1">
                       <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-extrabold text-white">
+                  <h3 className="text-lg xs:text-xl sm:text-2xl font-extrabold text-white leading-tight">
                     Exclusive Member Benefits
                   </h3>
-                  <p className="mt-4 text-lg text-indigo-100">
+                  <p className="mt-3 xs:mt-4 text-sm xs:text-base sm:text-lg text-indigo-100 leading-relaxed">
                     Join our community for early access to sales, 
+                    <span className="block xs:inline"> </span>
                     exclusive offers, and premium content.
                   </p>
-                  <form className="mt-6">
-                    <div className="flex flex-col sm:flex-row max-w-md mx-auto gap-3">
+                  <form className="mt-4 xs:mt-6">
+                    <div className="flex flex-col gap-2.5 xs:gap-3">
                       <input
                         type="email"
                         required
                         placeholder="Enter your email"
-                        className="min-w-0 flex-auto appearance-none rounded-md border border-white/20 bg-white/5 backdrop-blur-sm px-4 py-3 text-base text-white placeholder-white/60 focus:border-white focus:placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/30"
+                        className="w-full appearance-none rounded-md xs:rounded-lg border border-white/20 bg-white/5 backdrop-blur-sm px-3 xs:px-4 py-2.5 xs:py-3 text-sm xs:text-base text-white placeholder-white/60 focus:border-white focus:placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all duration-200"
                       />
-                      <Button className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
+                      <Button className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-medium px-4 xs:px-6 py-2.5 xs:py-3 text-sm xs:text-base rounded-md xs:rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
                         Join Now
                       </Button>
                     </div>
@@ -280,86 +283,86 @@ export default function HomePage() {
       </div>
 
       {/* Testimonials */}
-      <div className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-white py-8 xs:py-10 sm:py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight">
               What Our Customers Say
             </h2>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+            <p className="mt-3 xs:mt-4 max-w-2xl text-base xs:text-lg sm:text-xl text-gray-500 mx-auto leading-relaxed">
               Don't just take our word for it. Read reviews from our satisfied customers.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <div className="bg-gray-50 rounded-lg p-6 shadow-sm">
-              <div className="flex items-center mb-4">
+          <div className="mt-8 xs:mt-10 sm:mt-12 grid gap-4 xs:gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="bg-gray-50 rounded-lg xs:rounded-xl p-4 xs:p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center mb-3 xs:mb-4">
                 <div className="flex-shrink-0">
-                  <svg className="h-10 w-10 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-8 w-8 xs:h-10 xs:w-10 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-gray-900">Sarah Johnson</h3>
+                <div className="ml-2 xs:ml-3">
+                  <h3 className="text-sm xs:text-base font-medium text-gray-900">Sarah Johnson</h3>
                   <div className="flex mt-1">
                     {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="h-4 w-4 text-yellow-400 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <svg key={i} className="h-3 w-3 xs:h-4 xs:w-4 text-yellow-400 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     ))}
                   </div>
                 </div>
               </div>
-              <p className="text-gray-600">
+              <p className="text-xs xs:text-sm sm:text-base text-gray-600 leading-relaxed">
                 "I absolutely love this store! The products are high quality and the shipping was faster than expected. Customer service was also excellent when I had a question about my order."
               </p>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-6 shadow-sm">
-              <div className="flex items-center mb-4">
+            <div className="bg-gray-50 rounded-lg xs:rounded-xl p-4 xs:p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center mb-3 xs:mb-4">
                 <div className="flex-shrink-0">
-                  <svg className="h-10 w-10 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-8 w-8 xs:h-10 xs:w-10 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-gray-900">Michael Brown</h3>
+                <div className="ml-2 xs:ml-3">
+                  <h3 className="text-sm xs:text-base font-medium text-gray-900">Michael Brown</h3>
                   <div className="flex mt-1">
                     {[...Array(4)].map((_, i) => (
-                      <svg key={i} className="h-4 w-4 text-yellow-400 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <svg key={i} className="h-3 w-3 xs:h-4 xs:w-4 text-yellow-400 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     ))}
-                    <svg className="h-4 w-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="h-3 w-3 xs:h-4 xs:w-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" strokeDasharray="10" strokeDashoffset="5" />
                     </svg>
                   </div>
                 </div>
               </div>
-              <p className="text-gray-600">
+              <p className="text-xs xs:text-sm sm:text-base text-gray-600 leading-relaxed">
                 "The premium smartwatch I purchased exceeded my expectations. The battery life is incredible and the fitness tracking features are spot on. Would definitely recommend to friends."
               </p>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-6 shadow-sm">
-              <div className="flex items-center mb-4">
+            <div className="bg-gray-50 rounded-lg xs:rounded-xl p-4 xs:p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center mb-3 xs:mb-4">
                 <div className="flex-shrink-0">
-                  <svg className="h-10 w-10 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-8 w-8 xs:h-10 xs:w-10 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-gray-900">Emily Chen</h3>
+                <div className="ml-2 xs:ml-3">
+                  <h3 className="text-sm xs:text-base font-medium text-gray-900">Emily Chen</h3>
                   <div className="flex mt-1">
                     {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="h-4 w-4 text-yellow-400 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <svg key={i} className="h-3 w-3 xs:h-4 xs:w-4 text-yellow-400 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     ))}
                   </div>
                 </div>
               </div>
-              <p className="text-gray-600">
+              <p className="text-xs xs:text-sm sm:text-base text-gray-600 leading-relaxed">
                 "The checkout process was seamless and I received my order in just 2 days. The eco-friendly packaging was a nice touch too. Will definitely be shopping here again!"
               </p>
             </div>
