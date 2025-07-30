@@ -72,7 +72,8 @@ async function startServer() {
     }
 
     // Get port from environment variable with fallback
-    const port = process.env.PORT || 5000;
+    // Force port 5000 to match workflow configuration
+    const port = 5000;
     
     // Start the server with error handling for port conflicts
     server.listen(port, () => {
